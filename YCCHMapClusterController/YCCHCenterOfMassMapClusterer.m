@@ -1,6 +1,6 @@
 //
-//  CCHNearCenterMapClusterer.m
-//  CCHMapClusterController
+//  YCCHCenterOfMassMapClusterer.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,33 +23,27 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHNearCenterMapClusterer.h"
+#import "YCCHCenterOfMassMapClusterer.h"
 
-#import <float.h>
+@implementation YCCHCenterOfMassMapClusterer
 
-@implementation CCHNearCenterMapClusterer
-
-id<MKAnnotation> findClosestAnnotation(NSSet *annotations, MKMapPoint mapPoint)
+- (CLLocationCoordinate2D)mapClusterController:(YCCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
 {
-    id<MKAnnotation> closestAnnotation;
-    CLLocationDistance closestDistance = __DBL_MAX__;
+    double latitude = 0, longitude = 0;
     for (id<MKAnnotation> annotation in annotations) {
-        MKMapPoint annotationAsMapPoint = MKMapPointForCoordinate(annotation.coordinate);
-        CLLocationDistance distance = MKMetersBetweenMapPoints(mapPoint, annotationAsMapPoint);
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestAnnotation = annotation;
-        }
+        latitude += annotation.coordinate.latitude;
+        longitude += annotation.coordinate.longitude;
     }
     
-    return closestAnnotation;
-}
-
-- (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
-{
-    MKMapPoint centerMapPoint = MKMapPointMake(MKMapRectGetMidX(mapRect), MKMapRectGetMidY(mapRect));
-    id<MKAnnotation> closestAnnotation = findClosestAnnotation(annotations, centerMapPoint);
-    return closestAnnotation.coordinate;
+    CLLocationCoordinate2D coordinate;
+    if (annotations.count > 0) {
+        double count = (double)annotations.count;
+        coordinate = CLLocationCoordinate2DMake(latitude / count, longitude / count);
+    } else {
+        coordinate = CLLocationCoordinate2DMake(0, 0);
+    }
+    
+    return coordinate;
 }
 
 @end

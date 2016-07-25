@@ -1,8 +1,8 @@
 //
-//  CCHMapClusterControllerDebugPolygon.h
-//  CCHMapClusterController
+//  YCCHMapViewDelegateProxy.h
+//  YCCHMapClusterController
 //
-//  Copyright (C) 2014 Claus Höfele
+//  Copyright (C) 2013 Claus Höfele
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,12 +23,16 @@
 //  THE SOFTWARE.
 //
 
+#import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "YandexMapKit.h"
 
-@class CCHMapClusterController;
+@interface YCCHMapViewDelegateProxy : NSObject<MKMapViewDelegate>
 
-@interface CCHMapClusterControllerDebugPolygon : MKPolygon
+@property (nonatomic, readonly) NSHashTable *delegates;
+@property (nonatomic, weak, readonly) NSObject<MKMapViewDelegate> *target;
 
-@property (nonatomic, weak) CCHMapClusterController *mapClusterController;
+- (instancetype)initWithMapView:(YMKMapView *)mapView delegate:(NSObject<MKMapViewDelegate> *)delegate;
+- (void)addDelegate:(NSObject<MKMapViewDelegate> *)delegate;
 
 @end

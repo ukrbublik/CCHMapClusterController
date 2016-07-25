@@ -1,6 +1,6 @@
 //
-//  CCHMapViewDelegateProxy.m
-//  CCHMapClusterController
+//  YCCHMapViewDelegateProxy.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,21 +23,21 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapViewDelegateProxy.h"
+#import "YCCHMapViewDelegateProxy.h"
 
-#import "CCHMapClusterControllerDebugPolygon.h"
+#import "YCCHMapClusterControllerDebugPolygon.h"
 
-@interface CCHMapViewDelegateProxy()
+@interface YCCHMapViewDelegateProxy()
 
 @property (nonatomic) NSHashTable *delegates;
 @property (nonatomic, weak) NSObject<MKMapViewDelegate> *target;
-@property (nonatomic, weak) MKMapView *mapView;
+@property (nonatomic, weak) YMKMapView *mapView;
 
 @end
 
-@implementation CCHMapViewDelegateProxy
+@implementation YCCHMapViewDelegateProxy
 
-- (instancetype)initWithMapView:(MKMapView *)mapView delegate:(NSObject<MKMapViewDelegate> *)delegate
+- (instancetype)initWithMapView:(YMKMapView *)mapView delegate:(NSObject<MKMapViewDelegate> *)delegate
 {
     self = [super init];
     if (self) {
@@ -117,7 +117,7 @@
 
 #pragma mark - Map view proxied delegate methods
 
-- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+- (MKOverlayRenderer *)mapView:(YMKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 {
     MKOverlayRenderer *renderer;
 	
@@ -127,7 +127,7 @@
     }
 	
     // Default return value for debug polygons
-    if (renderer == nil && [overlay isKindOfClass:CCHMapClusterControllerDebugPolygon.class]) {
+    if (renderer == nil && [overlay isKindOfClass:YCCHMapClusterControllerDebugPolygon.class]) {
         MKPolygonRenderer *polygonRenderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
 #if TARGET_OS_IPHONE
         UIColor *color = [UIColor.blueColor colorWithAlphaComponent:0.7];

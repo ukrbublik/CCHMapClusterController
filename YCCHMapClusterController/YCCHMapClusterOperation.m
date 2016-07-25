@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterOperation.m
-//  CCHMapClusterController
+//  YCCHMapClusterOperation.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2014 Claus Höfele
 //
@@ -23,24 +23,24 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapClusterOperation.h"
+#import "YCCHMapClusterOperation.h"
 
-#import "CCHMapTree.h"
-#import "CCHMapClusterAnnotation.h"
-#import "CCHMapClusterControllerUtils.h"
-#import "CCHMapClusterer.h"
-#import "CCHMapAnimator.h"
-#import "CCHMapClusterControllerDelegate.h"
+#import "YCCHMapTree.h"
+#import "YCCHMapClusterAnnotation.h"
+#import "YCCHMapClusterControllerUtils.h"
+#import "YCCHMapClusterer.h"
+#import "YCCHMapAnimator.h"
+#import "YCCHMapClusterControllerDelegate.h"
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 
-@interface CCHMapClusterOperation()
+@interface YCCHMapClusterOperation()
 
-@property (nonatomic) MKMapView *mapView;
+@property (nonatomic) YMKMapView *mapView;
 @property (nonatomic) double cellMapSize;
 @property (nonatomic) double marginFactor;
 @property (nonatomic) MKMapRect mapViewVisibleMapRect;
-@property (nonatomic) MKCoordinateRegion mapViewRegion;
+@property (nonatomic) YMKMapRegion mapViewRegion;
 @property (nonatomic) CGFloat mapViewWidth;
 @property (nonatomic, copy) NSArray *mapViewAnnotations;
 @property (nonatomic) BOOL reuseExistingClusterAnnotations;
@@ -52,19 +52,19 @@
 
 @end
 
-@implementation CCHMapClusterOperation
+@implementation YCCHMapClusterOperation
 
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-- (instancetype)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering
+- (instancetype)initWithMapView:(YMKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering
 {
     self = [super init];
     if (self) {
         _mapView = mapView;
         _cellMapSize = [self.class cellMapSizeForCellSize:cellSize withMapView:mapView];
         _marginFactor = marginFactor;
-        _mapViewVisibleMapRect = mapView.visibleMapRect;
+        _mapViewVisibleMapRect = mapView.visibleMapRect;  //_YMK_change_
         _mapViewRegion = mapView.region;
         _mapViewWidth = mapView.bounds.size.width;
         _mapViewAnnotations = mapView.annotations;
@@ -76,14 +76,18 @@
         _finished = NO;
     }
     
+    /*
+     - (YMKMapPoint)convertMapViewPointToMapPoint:(CGPoint)point;
+     */
+    
     return self;
 }
 
-+ (double)cellMapSizeForCellSize:(double)cellSize withMapView:(MKMapView *)mapView
++ (double)cellMapSizeForCellSize:(double)cellSize withMapView:(YMKMapView *)mapView
 {
     // World size is multiple of cell size so that cells wrap around at the 180th meridian
-    double cellMapSize = CCHMapClusterControllerMapLengthForLength(mapView, mapView.superview, cellSize);
-    cellMapSize = CCHMapClusterControllerAlignMapLengthToWorldWidth(cellMapSize);
+    double cellMapSize = YCCHMapClusterControllerMapLengthForLength(mapView, mapView.superview, cellSize);
+    cellMapSize = YCCHMapClusterControllerAlignMapLengthToWorldWidth(cellMapSize);
     
     return cellMapSize;
 }
@@ -92,7 +96,7 @@
 {
     // Expand map rect and align to cell size to avoid popping when panning
     MKMapRect gridMapRect = MKMapRectInset(mapRect, -marginFactor * mapRect.size.width, -marginFactor * mapRect.size.height);
-    gridMapRect = CCHMapClusterControllerAlignMapRectToCellSize(gridMapRect, cellMapSize);
+    gridMapRect = YCCHMapClusterControllerAlignMapRectToCellSize(gridMapRect, cellMapSize);
     
     return gridMapRect;
 }
@@ -101,14 +105,14 @@
 {
     self.executing = YES;
     
-    double zoomLevel = CCHMapClusterControllerZoomLevelForRegion(self.mapViewRegion.center.longitude, self.mapViewRegion.span.longitudeDelta, self.mapViewWidth);
+    double zoomLevel = YCCHMapClusterControllerZoomLevelForRegion(self.mapViewRegion.center.longitude, self.mapViewRegion.span.longitudeDelta, self.mapViewWidth);
     BOOL disableClustering = (zoomLevel > self.maxZoomLevelForClustering);
     BOOL respondsToSelector = [_clusterControllerDelegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)];
     
     // For each cell in the grid, pick one cluster annotation to show
     MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.mapViewVisibleMapRect withCellMapSize:self.cellMapSize marginFactor:self.marginFactor];
     NSMutableSet *clusters = [NSMutableSet set];
-    CCHMapClusterControllerEnumerateCells(gridMapRect, _cellMapSize, ^(MKMapRect cellMapRect) {
+    YCCHMapClusterControllerEnumerateCells(gridMapRect, _cellMapSize, ^(MKMapRect cellMapRect) {
         NSSet *allAnnotationsInCell = [_allAnnotationsMapTree annotationsInMapRect:cellMapRect];
         
         if (allAnnotationsInCell.count > 0) {
@@ -116,11 +120,11 @@
             NSArray *annotationSets;
             if (disableClustering) {
                 // Create annotation for each unique location because clustering is disabled
-                annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, NSUIntegerMax);
+                annotationSets = YCCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, NSUIntegerMax);
                 annotationSetsAreUniqueLocations = YES;
             } else {
                 NSUInteger max = _minUniqueLocationsForClustering > 1 ? _minUniqueLocationsForClustering - 1 : 1;
-                annotationSets = CCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, max);
+                annotationSets = YCCHMapClusterControllerAnnotationSetsByUniqueLocations(allAnnotationsInCell, max);
                 if (annotationSets) {
                     // Create annotation for each unique location because there are too few locations for clustering
                     annotationSetsAreUniqueLocations = YES;
@@ -140,10 +144,10 @@
                     coordinate = [_clusterer mapClusterController:_clusterController coordinateForAnnotations:annotationSet inMapRect:cellMapRect];
                 }
                 
-                CCHMapClusterAnnotation *annotationForCell;
+                YCCHMapClusterAnnotation *annotationForCell;
                 if (_reuseExistingClusterAnnotations) {
                     // Check if an existing cluster annotation can be reused
-                    annotationForCell = CCHMapClusterControllerFindVisibleAnnotation(annotationSet, visibleAnnotationsInCell);
+                    annotationForCell = YCCHMapClusterControllerFindVisibleAnnotation(annotationSet, visibleAnnotationsInCell);
                     
                     // For unique locations, coordinate has to match as well
                     if (annotationForCell && annotationSetsAreUniqueLocations) {
@@ -154,7 +158,7 @@
                 
                 if (annotationForCell == nil) {
                     // Create new cluster annotation
-                    annotationForCell = [[CCHMapClusterAnnotation alloc] init];
+                    annotationForCell = [[YCCHMapClusterAnnotation alloc] init];
                     annotationForCell.mapClusterController = _clusterController;
                     annotationForCell.delegate = _clusterControllerDelegate;
                     annotationForCell.annotations = annotationSet;
@@ -182,7 +186,7 @@
     });
     
     // Figure out difference between new and old clusters
-    NSSet *annotationsBeforeAsSet = CCHMapClusterControllerClusterAnnotationsForAnnotations(self.mapViewAnnotations, self.clusterController);
+    NSSet *annotationsBeforeAsSet = YCCHMapClusterControllerClusterAnnotationsForAnnotations(self.mapViewAnnotations, self.clusterController);
     NSMutableSet *annotationsToKeep = [NSMutableSet setWithSet:annotationsBeforeAsSet];
     [annotationsToKeep intersectSet:clusters];
     NSMutableSet *annotationsToAddAsSet = [NSMutableSet setWithSet:clusters];

@@ -1,6 +1,6 @@
 //
-//  CCHCenterOfMassMapClusterer.h
-//  CCHMapClusterController
+//  YCCHFadeInOutMapAnimator.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -25,20 +25,29 @@
 
 #import <Foundation/Foundation.h>
 
-#import "CCHMapClusterer.h"
+#import "YCCHMapAnimator.h"
 
 /**
- `CCHMapClusterer` implementation that positions a cluster annotation at the average coordinate
- of all annotations in a cluster.
+ `YCCHMapAnimator` implementation that fades annotation views in and out.
  */
-@interface CCHCenterOfMassMapClusterer : NSObject<CCHMapClusterer>
+@interface YCCHFadeInOutMapAnimator : NSObject<YCCHMapAnimator>
+
+/** The animation's duration. */
+@property (nonatomic, assign) NSTimeInterval duration;
 
 /**
- Returns the average (or center of mass) coordinate of all annotations.
+ Fades annotation views in to make the visible.
  @param mapClusterController map cluster controller.
- @param annotations annotations in this cluster (annotations are of type `CCHMapClusterAnnotation`).
- @param mapRect the area that's covered by this cluster.
+ @param annotationViews .
  */
-- (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
+- (void)mapClusterController:(YCCHMapClusterController *)mapClusterController didAddAnnotationViews:(NSArray *)annotationViews;
+
+/**
+ Fades annotation views out to hide them.
+ @param mapClusterController map cluster controller.
+ @param annotations annotations to animate (annotations are of type `YCCHMapClusterAnnotation`).
+ @param completionHandler this completion handler must be called after the animation has finished.
+ */
+- (void)mapClusterController:(YCCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
 
 @end

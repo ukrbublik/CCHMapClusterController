@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterAnnotation.h
-//  CCHMapClusterController
+//  YCCHMapClusterAnnotation.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -25,16 +25,17 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "YandexMapKit.h"
 
-@protocol CCHMapClusterControllerDelegate;
-@class CCHMapClusterController;
+@protocol YCCHMapClusterControllerDelegate;
+@class YCCHMapClusterController;
 
 /**
  Container for clustered annotations.
  */
-@interface CCHMapClusterAnnotation : NSObject<MKAnnotation>
+@interface YCCHMapClusterAnnotation : NSObject<MKAnnotation, YMKAnnotation>
 
-@property (nonatomic, weak) CCHMapClusterController *mapClusterController;
+@property (nonatomic, weak) YCCHMapClusterController *mapClusterController;
 
 /** The string containing the annotation's title. */
 @property (nonatomic, copy) NSString *title;
@@ -44,7 +45,7 @@
 @property (nonatomic) CLLocationCoordinate2D coordinate;
 
 /** Custom titles and subtitles are retrieved via this delegate. */
-@property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
+@property (nonatomic, weak) id<YCCHMapClusterControllerDelegate> delegate;
 
 /** Annotations contained in this cluster. */
 @property (nonatomic, copy) NSSet *annotations;
@@ -57,5 +58,7 @@
 
 /** The area that includes all annotations. */
 - (MKMapRect)mapRect;
+
+-(id<YMKAnnotation>)oneAnnotation;
 
 @end

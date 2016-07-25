@@ -1,8 +1,8 @@
 //
-//  CCHMapClusterer.h
-//  CCHMapClusterController
+//  YCCHMapClusterControllerDebugPolygon.h
+//  YCCHMapClusterController
 //
-//  Copyright (C) 2013 Claus Höfele
+//  Copyright (C) 2014 Claus Höfele
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,13 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "YandexMapKit.h"
 
-@class CCHMapClusterController;
+@class YCCHMapClusterController;
 
-/** 
- A custom strategy that defines where clusters are positioned must implement this protocol.
- */
-@protocol CCHMapClusterer
+@interface YCCHMapClusterControllerDebugPolygon : MKPolygon
 
-/**
- Called on a background thread to determine the location of the cluster for the given annotations.
- @param mapClusterController map cluster controller.
- @param annotations annotations in this cluster (annotations are of type `CCHMapClusterAnnotation`).
- @param mapRect the area that's covered by this cluster.
- */
-- (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
+@property (nonatomic, weak) YCCHMapClusterController *mapClusterController;
 
 @end

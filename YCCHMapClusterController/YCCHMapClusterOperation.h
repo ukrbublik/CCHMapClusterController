@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterOperation.h
-//  CCHMapClusterController
+//  YCCHMapClusterOperation.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2014 Claus Höfele
 //
@@ -25,26 +25,28 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "YandexMapKit.h"
+#import "YMKMapView+Additions.h"
 
-@class CCHMapClusterController;
-@class CCHMapClusterAnnotation;
-@class CCHMapTree;
-@protocol CCHMapClusterer;
-@protocol CCHMapAnimator;
-@protocol CCHMapClusterControllerDelegate;
+@class YCCHMapClusterController;
+@class YCCHMapClusterAnnotation;
+@class YCCHMapTree;
+@protocol YCCHMapClusterer;
+@protocol YCCHMapAnimator;
+@protocol YCCHMapClusterControllerDelegate;
 
-@interface CCHMapClusterOperation : NSOperation
+@interface YCCHMapClusterOperation : NSOperation
 
-@property (nonatomic) CCHMapTree *allAnnotationsMapTree;
-@property (nonatomic) CCHMapTree *visibleAnnotationsMapTree;
-@property (nonatomic) id<CCHMapClusterer> clusterer;
-@property (nonatomic) id<CCHMapAnimator> animator;
-@property (nonatomic, weak) id<CCHMapClusterControllerDelegate> clusterControllerDelegate;
-@property (nonatomic, weak) CCHMapClusterController *clusterController;
+@property (nonatomic) YCCHMapTree *allAnnotationsMapTree;
+@property (nonatomic) YCCHMapTree *visibleAnnotationsMapTree;
+@property (nonatomic) id<YCCHMapClusterer> clusterer;
+@property (nonatomic) id<YCCHMapAnimator> animator;
+@property (nonatomic, weak) id<YCCHMapClusterControllerDelegate> clusterControllerDelegate;
+@property (nonatomic, weak) YCCHMapClusterController *clusterController;
 
-- (instancetype)initWithMapView:(MKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering;
+- (instancetype)initWithMapView:(YMKMapView *)mapView cellSize:(double)cellSize marginFactor:(double)marginFactor reuseExistingClusterAnnotations:(BOOL)reuseExistingClusterAnnotation maxZoomLevelForClustering:(double)maxZoomLevelForClustering minUniqueLocationsForClustering:(NSUInteger)minUniqueLocationsForClustering;
 
-+ (double)cellMapSizeForCellSize:(double)cellSize withMapView:(MKMapView *)mapView;
++ (double)cellMapSizeForCellSize:(double)cellSize withMapView:(YMKMapView *)mapView;
 + (MKMapRect)gridMapRectForMapRect:(MKMapRect)mapRect withCellMapSize:(double)cellMapSize marginFactor:(double)marginFactor;
 
 @end

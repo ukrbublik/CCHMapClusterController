@@ -1,6 +1,6 @@
 //
-//  CCHMapTree.m
-//  CCHMapClusterController
+//  YCCHMapTree.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,19 +23,19 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapTree.h"
+#import "YCCHMapTree.h"
 
-#import "CCHMapTreeUtils.h"
+#import "YCCHMapTreeUtils.h"
 
-@interface CCHMapTree()
+@interface YCCHMapTree()
 
 @property (nonatomic) NSMutableSet *mutableAnnotations;
-@property (nonatomic) CCHMapTreeNode *root;
+@property (nonatomic) YCCHMapTreeNode *root;
 @property (nonatomic) NSUInteger nodeCapacity;
 
 @end
 
-@implementation CCHMapTree
+@implementation YCCHMapTree
 
 - (instancetype)init
 {
@@ -48,8 +48,8 @@
     if (self) {
         _nodeCapacity = nodeCapacity;
         _mutableAnnotations = [NSMutableSet set];
-        CCHMapTreeBoundingBox world = CCHMapTreeBoundingBoxMake(minLatitude, minLongitude, maxLatitude, maxLongitude);
-        _root = CCHMapTreeBuildWithData(NULL, 0, world, nodeCapacity);
+        YCCHMapTreeBoundingBox world = YCCHMapTreeBoundingBoxMake(minLatitude, minLongitude, maxLatitude, maxLongitude);
+        _root = YCCHMapTreeBuildWithData(NULL, 0, world, nodeCapacity);
     }
     
     return self;
@@ -57,7 +57,7 @@
 
 - (void)dealloc
 {
-    CCHMapTreeFreeQuadTreeNode(self.root);
+    YCCHMapTreeFreeQuadTreeNode(self.root);
 }
 
 - (NSSet *)annotations
@@ -72,8 +72,8 @@
     NSMutableSet *mutableAnnotations = self.mutableAnnotations;
     for (id<MKAnnotation> annotation in annotations) {
         if (![mutableAnnotations containsObject:annotation]) {
-            CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)annotation);
-            if (CCHMapTreeNodeInsertData(_root, data, (int)_nodeCapacity)) {
+            YCCHMapTreeNodeData data = YCCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)annotation);
+            if (YCCHMapTreeNodeInsertData(_root, data, (int)_nodeCapacity)) {
                 updated = YES;
                 [mutableAnnotations addObject:annotation];
             }
@@ -91,8 +91,8 @@
     for (id<MKAnnotation> annotation in annotations) {
         id<MKAnnotation> member = [mutableAnnotations member:annotation];
         if (member) {
-            CCHMapTreeNodeData data = CCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)member);
-            if (CCHMapTreeNodeRemoveData(_root, data)) {
+            YCCHMapTreeNodeData data = YCCHMapTreeNodeDataMake(annotation.coordinate.latitude, annotation.coordinate.longitude, (__bridge void *)member);
+            if (YCCHMapTreeNodeRemoveData(_root, data)) {
                 updated = YES;
                 [mutableAnnotations removeObject:annotation];
             }
@@ -102,7 +102,7 @@
     return updated;
 }
 
-CCHMapTreeBoundingBox CCHMapTreeBoundingBoxForMapRect(MKMapRect mapRect)
+YCCHMapTreeBoundingBox YCCHMapTreeBoundingBoxForMapRect(MKMapRect mapRect)
 {
     CLLocationCoordinate2D topLeft = MKCoordinateForMapPoint(mapRect.origin);
     CLLocationCoordinate2D botRight = MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(mapRect), MKMapRectGetMaxY(mapRect)));
@@ -112,13 +112,13 @@ CCHMapTreeBoundingBox CCHMapTreeBoundingBoxForMapRect(MKMapRect mapRect)
     CLLocationDegrees minLon = topLeft.longitude;
     CLLocationDegrees maxLon = botRight.longitude;
     
-    return CCHMapTreeBoundingBoxMake(minLat, minLon, maxLat, maxLon);
+    return YCCHMapTreeBoundingBoxMake(minLat, minLon, maxLat, maxLon);
 }
 
 - (NSSet *)annotationsInMapRect:(MKMapRect)mapRect
 {
-    CCHMapTreeUnsafeMutableArray *annotations = [[CCHMapTreeUnsafeMutableArray alloc] initWithCapacity:10];
-    CCHMapTreeGatherDataInRange3(self.root, CCHMapTreeBoundingBoxForMapRect(mapRect), annotations);
+    YCCHMapTreeUnsafeMutableArray *annotations = [[YCCHMapTreeUnsafeMutableArray alloc] initWithCapacity:10];
+    YCCHMapTreeGatherDataInRange3(self.root, YCCHMapTreeBoundingBoxForMapRect(mapRect), annotations);
     NSSet *annotationsAsSet = [NSSet setWithObjects:annotations.objects count:annotations.numObjects];
     
     return annotationsAsSet;

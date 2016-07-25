@@ -1,6 +1,6 @@
 //
-//  CCHMapViewDelegateProxy.h
-//  CCHMapClusterController
+//  YCCHCenterOfMassMapClusterer.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -24,14 +24,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <MapKit/MapKit.h>
 
-@interface CCHMapViewDelegateProxy : NSObject<MKMapViewDelegate>
+#import "YCCHMapClusterer.h"
 
-@property (nonatomic, readonly) NSHashTable *delegates;
-@property (nonatomic, weak, readonly) NSObject<MKMapViewDelegate> *target;
+/**
+ `YCCHMapClusterer` implementation that positions a cluster annotation at the average coordinate
+ of all annotations in a cluster.
+ */
+@interface YCCHCenterOfMassMapClusterer : NSObject<YCCHMapClusterer>
 
-- (instancetype)initWithMapView:(MKMapView *)mapView delegate:(NSObject<MKMapViewDelegate> *)delegate;
-- (void)addDelegate:(NSObject<MKMapViewDelegate> *)delegate;
+/**
+ Returns the average (or center of mass) coordinate of all annotations.
+ @param mapClusterController map cluster controller.
+ @param annotations annotations in this cluster (annotations are of type `YCCHMapClusterAnnotation`).
+ @param mapRect the area that's covered by this cluster.
+ */
+- (CLLocationCoordinate2D)mapClusterController:(YCCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 
 @end

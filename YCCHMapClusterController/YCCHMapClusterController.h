@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterController.h
-//  CCHMapClusterController
+//  YCCHMapClusterController.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -25,20 +25,21 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "YandexMapKit.h"
 
-@protocol CCHMapClusterControllerDelegate;
-@protocol CCHMapClusterer;
-@protocol CCHMapAnimator;
+@protocol YCCHMapClusterControllerDelegate;
+@protocol YCCHMapClusterer;
+@protocol YCCHMapAnimator;
 
 /**
  Controller to cluster annotations. Automatically updates clustering when user zooms or pans the map.
  */
-@interface CCHMapClusterController : NSObject
+@interface YCCHMapClusterController : NSObject
 
 /** Clustered annotations. */
 @property (nonatomic, copy, readonly) NSSet *annotations;
 /** Map view to display clustered annotations. */
-@property (nonatomic, readonly) MKMapView *mapView;
+@property (nonatomic, readonly) YMKMapView *mapView;
 
 /** Multiplier to extend visible area that's included for clustering (default: 0.5). */
 @property (nonatomic) double marginFactor;
@@ -56,24 +57,24 @@
 @property (nonatomic) NSUInteger minUniqueLocationsForClustering;
 
 /** Delegate to configure cluster annotations. */
-@property (nonatomic, weak) id<CCHMapClusterControllerDelegate> delegate;
+@property (nonatomic, weak) id<YCCHMapClusterControllerDelegate> delegate;
 
-/** Strategy for positioning cluster annotations (default: `CCHCenterOfMassMapClusterer`). */
-@property (nonatomic, weak) id<CCHMapClusterer> clusterer;
+/** Strategy for positioning cluster annotations (default: `YCCHCenterOfMassMapClusterer`). */
+@property (nonatomic, weak) id<YCCHMapClusterer> clusterer;
 /** Reuse existing cluster annotations for a cell (default: `YES`). */
 @property (nonatomic) BOOL reuseExistingClusterAnnotations;
 
-/** Strategy for animating cluster annotations in and out (default: `CCHFadeInOutMapAnimator`). */
-@property (nonatomic, weak) id<CCHMapAnimator> animator;
+/** Strategy for animating cluster annotations in and out (default: `YCCHFadeInOutMapAnimator`). */
+@property (nonatomic, weak) id<YCCHMapAnimator> animator;
 
 /** Displays the grid used for clustering. */
 @property (nonatomic, getter = isDebuggingEnabled) BOOL debuggingEnabled;
 
 /**
  Initializes the cluster controller.
- @param mapView `MKMapView` to use to display clusters.
+ @param mapView `YMKMapView` to use to display clusters.
  */
-- (instancetype)initWithMapView:(MKMapView *)mapView;
+- (instancetype)initWithMapView:(YMKMapView *)mapView;
 
 /** 
  Adds annotations and immediately updates clustering.

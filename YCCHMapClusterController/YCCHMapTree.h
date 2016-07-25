@@ -1,6 +1,6 @@
 //
-//  CCHMapTree.h
-//  CCHMapClusterController
+//  YCCHMapTree.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -25,8 +25,9 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "YandexMapKit.h"
 
-@interface CCHMapTree : NSObject
+@interface YCCHMapTree : NSObject
 
 @property (nonatomic, copy, readonly) NSSet *annotations;
 

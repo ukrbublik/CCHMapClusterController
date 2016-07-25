@@ -1,6 +1,6 @@
 //
-//  CCHMapAnimator.h
-//  CCHMapClusterController
+//  YCCHNearCenterMapClusterer.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -25,29 +25,19 @@
 
 #import <Foundation/Foundation.h>
 
-@class CCHMapClusterController;
+#import "YCCHMapClusterer.h"
 
 /**
- A custom strategy that defines how annotation views for `CCHClusterAnnotation`s are animated 
- must implement this protocol.
+ `YCCHMapClusterer` implementation that positions a cluster annotation near the center of the cluster cell.
  */
-@protocol CCHMapAnimator <NSObject>
+@interface YCCHNearCenterMapClusterer : NSObject<YCCHMapClusterer>
 
 /**
- Called on the main thread to animate in the given annotation views. At this point, the views' annotations
- have already been added to the map view.
+ Returns the coordinate of the annotation closest to the center of the cell.
  @param mapClusterController map cluster controller.
- @param annotationViews .
+ @param annotations annotations in this cluster (annotations are of type `YCCHMapClusterAnnotation`).
+ @param mapRect the area that's covered by this cluster.
  */
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController didAddAnnotationViews:(NSArray *)annotationViews;
-
-/**
- Called on the main thread to animate out the given annotations. The views' annotations will be removed
- when calling the completion handler.
- @param mapClusterController map cluster controller.
- @param annotations annotations to animate (annotations are of type `CCHMapClusterAnnotation`).
- @param completionHandler this completion handler must be called after the animation has finished.
- */
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
+- (CLLocationCoordinate2D)mapClusterController:(YCCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 
 @end

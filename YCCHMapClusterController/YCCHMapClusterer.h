@@ -1,6 +1,6 @@
 //
-//  CCHNearCenterMapClusterer.h
-//  CCHMapClusterController
+//  YCCHMapClusterer.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -24,20 +24,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
+#import "YandexMapKit.h"
 
-#import "CCHMapClusterer.h"
+@class YCCHMapClusterController;
 
-/**
- `CCHMapClusterer` implementation that positions a cluster annotation near the center of the cluster cell.
+/** 
+ A custom strategy that defines where clusters are positioned must implement this protocol.
  */
-@interface CCHNearCenterMapClusterer : NSObject<CCHMapClusterer>
+@protocol YCCHMapClusterer
 
 /**
- Returns the coordinate of the annotation closest to the center of the cell.
+ Called on a background thread to determine the location of the cluster for the given annotations.
  @param mapClusterController map cluster controller.
- @param annotations annotations in this cluster (annotations are of type `CCHMapClusterAnnotation`).
+ @param annotations annotations in this cluster (annotations are of type `YCCHMapClusterAnnotation`).
  @param mapRect the area that's covered by this cluster.
  */
-- (CLLocationCoordinate2D)mapClusterController:(CCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
+- (CLLocationCoordinate2D)mapClusterController:(YCCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 
 @end

@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterAnnotation.m
-//  CCHMapClusterController
+//  YCCHMapClusterAnnotation.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,17 +23,19 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapClusterAnnotation.h"
+#import "YCCHMapClusterAnnotation.h"
 
-#import "CCHMapClusterControllerDelegate.h"
-#import "CCHMapClusterControllerUtils.h"
+#import "YCCHMapClusterControllerDelegate.h"
+#import "YCCHMapClusterControllerUtils.h"
 
-@implementation CCHMapClusterAnnotation
+@implementation YCCHMapClusterAnnotation
 
 - (NSString *)title
 {
     if (_title == nil && [self.delegate respondsToSelector:@selector(mapClusterController:titleForMapClusterAnnotation:)]) {
         _title = [self.delegate mapClusterController:self.mapClusterController titleForMapClusterAnnotation:self];
+    } else if(_title == nil && !self.isCluster) {
+        _title = self.oneAnnotation.title;
     }
 
     return _title;
@@ -43,6 +45,8 @@
 {
     if (_subtitle == nil && [self.delegate respondsToSelector:@selector(mapClusterController:subtitleForMapClusterAnnotation:)]) {
         _subtitle = [self.delegate mapClusterController:self.mapClusterController subtitleForMapClusterAnnotation:self];
+    } else if(_title == nil && !self.isCluster) {
+        _subtitle = self.oneAnnotation.subtitle;
     }
     
     return _subtitle;
@@ -53,9 +57,16 @@
     return (self.annotations.count > 1);
 }
 
+-(id<YMKAnnotation>)oneAnnotation {
+    if(self.isCluster)
+        return nil;
+    else
+        return [self.annotations anyObject];
+}
+
 - (BOOL)isUniqueLocation
 {
-    return CCHMapClusterControllerIsUniqueLocation(self.annotations);
+    return YCCHMapClusterControllerIsUniqueLocation(self.annotations);
 }
 
 - (BOOL)isOneLocation

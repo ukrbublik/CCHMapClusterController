@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterControllerDebugPolygon.h
-//  CCHMapClusterController
+//  YCCHMapClusterControllerDebugPolygon.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2014 Claus Höfele
 //
@@ -23,8 +23,8 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapClusterControllerDebugPolygon.h"
+#import "YCCHMapClusterControllerDebugPolygon.h"
 
-@implementation CCHMapClusterControllerDebugPolygon
+@implementation YCCHMapClusterControllerDebugPolygon
 
 @end

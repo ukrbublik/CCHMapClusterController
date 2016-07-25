@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterControllerDelegate.h
-//  CCHMapClusterController
+//  YCCHMapClusterControllerDelegate.h
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -25,13 +25,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class CCHMapClusterController;
-@class CCHMapClusterAnnotation;
+@class YCCHMapClusterController;
+@class YCCHMapClusterAnnotation;
 
 /**
  Protocol to configure custom titles and subtitles for cluster annotations.
  */
-@protocol CCHMapClusterControllerDelegate <NSObject>
+@protocol YCCHMapClusterControllerDelegate <NSObject>
 
 @optional
 
@@ -40,20 +40,20 @@
  @param mapClusterController The cluster controller sending the message.
  @param mapClusterAnnotation The cluster annotation.
  */
-- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation;
+- (NSString *)mapClusterController:(YCCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(YCCHMapClusterAnnotation *)mapClusterAnnotation;
 
 /**
  Returns the subtitle for a cluster annotation.
  @param mapClusterController The cluster controller sending the message.
  @param mapClusterAnnotation The cluster annotation.
  */
-- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation;
+- (NSString *)mapClusterController:(YCCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(YCCHMapClusterAnnotation *)mapClusterAnnotation;
 
 /**
  Called before the given cluster annotation is reused for a cell.
  @param mapClusterController The cluster controller sending the message.
  @param mapClusterAnnotation The cluster annotation that's reused. Its properties are updated to reflect the current state.
  */
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation;
+- (void)mapClusterController:(YCCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(YCCHMapClusterAnnotation *)mapClusterAnnotation;
 
 @end

@@ -1,6 +1,6 @@
 //
-//  CCHFadeInOutMapAnimator.m
-//  CCHMapClusterController
+//  YCCHFadeInOutMapAnimator.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,13 +23,14 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHFadeInOutMapAnimator.h"
+#import "YCCHFadeInOutMapAnimator.h"
 
-#import "CCHMapClusterController.h"
+#import "YCCHMapClusterController.h"
 
 #import <MapKit/MapKit.h>
+#import "../../../../Pods/YandexMapKit/Headers/YandexMapKit.h"
 
-@implementation CCHFadeInOutMapAnimator
+@implementation YCCHFadeInOutMapAnimator
 
 - (instancetype)init
 {
@@ -40,7 +41,7 @@
     return self;
 }
 
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController didAddAnnotationViews:(NSArray *)annotationViews
+- (void)mapClusterController:(YCCHMapClusterController *)mapClusterController didAddAnnotationViews:(NSArray *)annotationViews
 {
     // Animate annotations that get added
 #if TARGET_OS_IPHONE
@@ -57,7 +58,7 @@
 #endif
 }
 
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
+- (void)mapClusterController:(YCCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
 #if TARGET_OS_IPHONE
     MKMapView *mapView = mapClusterController.mapView;

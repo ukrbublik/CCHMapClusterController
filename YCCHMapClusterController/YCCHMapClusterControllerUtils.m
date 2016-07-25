@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterControllerUtils.m
-//  CCHMapClusterController
+//  YCCHMapClusterControllerUtils.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,16 +23,16 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapClusterControllerUtils.h"
+#import "YCCHMapClusterControllerUtils.h"
 
-#import "CCHMapClusterAnnotation.h"
+#import "YCCHMapClusterAnnotation.h"
 
 #import <float.h>
 
 #define fequal(a, b) (fabs((a) - (b)) < __FLT_EPSILON__)
 #define GEOHASH_LENGTH 9
 
-MKMapRect CCHMapClusterControllerAlignMapRectToCellSize(MKMapRect mapRect, double cellSize)
+MKMapRect YCCHMapClusterControllerAlignMapRectToCellSize(MKMapRect mapRect, double cellSize)
 {
     if (cellSize == 0) {
         return MKMapRectNull;
@@ -46,10 +46,10 @@ MKMapRect CCHMapClusterControllerAlignMapRectToCellSize(MKMapRect mapRect, doubl
     return MKMapRectMake(startX, startY, endX - startX, endY - startY);
 }
 
-CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *annotations, NSSet *visibleAnnotations)
+YCCHMapClusterAnnotation *YCCHMapClusterControllerFindVisibleAnnotation(NSSet *annotations, NSSet *visibleAnnotations)
 {
     for (id<MKAnnotation> annotation in annotations) {
-        for (CCHMapClusterAnnotation *visibleAnnotation in visibleAnnotations) {
+        for (YCCHMapClusterAnnotation *visibleAnnotation in visibleAnnotations) {
             if ([visibleAnnotation.annotations containsObject:annotation]) {
                 return visibleAnnotation;
             }
@@ -60,9 +60,9 @@ CCHMapClusterAnnotation *CCHMapClusterControllerFindVisibleAnnotation(NSSet *ann
 }
 
 #if TARGET_OS_IPHONE
-double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, UIView *view, double length)
+double YCCHMapClusterControllerMapLengthForLength(YMKMapView *mapView, UIView *view, double length)
 #else
-double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *view, double length)
+double YCCHMapClusterControllerMapLengthForLength(YMKMapView *mapView, NSView *view, double length)
 #endif
 {
     // Convert points to coordinates
@@ -86,7 +86,7 @@ double CCHMapClusterControllerMapLengthForLength(MKMapView *mapView, NSView *vie
     return mapLength;
 }
 
-double CCHMapClusterControllerAlignMapLengthToWorldWidth(double mapLength)
+double YCCHMapClusterControllerAlignMapLengthToWorldWidth(double mapLength)
 {
     if (mapLength == 0) {
         return 0;
@@ -96,20 +96,20 @@ double CCHMapClusterControllerAlignMapLengthToWorldWidth(double mapLength)
     return mapLength;
 }
 
-BOOL CCHMapClusterControllerCoordinateEqualToCoordinate(CLLocationCoordinate2D coordinate0, CLLocationCoordinate2D coordinate1)
+BOOL YCCHMapClusterControllerCoordinateEqualToCoordinate(CLLocationCoordinate2D coordinate0, CLLocationCoordinate2D coordinate1)
 {
     BOOL isCoordinateUpToDate = fequal(coordinate0.latitude, coordinate1.latitude) && fequal(coordinate0.longitude, coordinate1.longitude);
     return isCoordinateUpToDate;
 }
 
-CCHMapClusterAnnotation *CCHMapClusterControllerClusterAnnotationForAnnotation(MKMapView *mapView, id<MKAnnotation> annotation, MKMapRect mapRect)
+YCCHMapClusterAnnotation *YCCHMapClusterControllerClusterAnnotationForAnnotation(YMKMapView *mapView, id<MKAnnotation> annotation, MKMapRect mapRect)
 {
-    CCHMapClusterAnnotation *annotationResult;
+    YCCHMapClusterAnnotation *annotationResult;
     
     NSSet *mapAnnotations = [mapView annotationsInMapRect:mapRect];
     for (id<MKAnnotation> mapAnnotation in mapAnnotations) {
-        if ([mapAnnotation isKindOfClass:CCHMapClusterAnnotation.class]) {
-            CCHMapClusterAnnotation *mapClusterAnnotation = (CCHMapClusterAnnotation *)mapAnnotation;
+        if ([mapAnnotation isKindOfClass:YCCHMapClusterAnnotation.class]) {
+            YCCHMapClusterAnnotation *mapClusterAnnotation = (YCCHMapClusterAnnotation *)mapAnnotation;
             if (mapClusterAnnotation.annotations) {
                 if ([mapClusterAnnotation.annotations containsObject:annotation]) {
                     annotationResult = mapClusterAnnotation;
@@ -122,7 +122,7 @@ CCHMapClusterAnnotation *CCHMapClusterControllerClusterAnnotationForAnnotation(M
     return annotationResult;
 }
 
-void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellMapRect))
+void YCCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, void (^block)(MKMapRect cellMapRect))
 {
     NSCAssert(block != NULL, @"Block argument can't be NULL");
     if (block == nil) {
@@ -144,7 +144,7 @@ void CCHMapClusterControllerEnumerateCells(MKMapRect mapRect, double cellSize, v
     }
 }
 
-MKMapRect CCHMapClusterControllerMapRectForCoordinateRegion(MKCoordinateRegion coordinateRegion)
+MKMapRect YCCHMapClusterControllerMapRectForCoordinateRegion(MKCoordinateRegion coordinateRegion)
 {
     CLLocationCoordinate2D topLeftCoordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude + (coordinateRegion.span.latitudeDelta / 2.0), coordinateRegion.center.longitude - (coordinateRegion.span.longitudeDelta / 2.0));
     MKMapPoint topLeftMapPoint = MKMapPointForCoordinate(topLeftCoordinate);
@@ -157,13 +157,13 @@ MKMapRect CCHMapClusterControllerMapRectForCoordinateRegion(MKCoordinateRegion c
     return mapRect;
 }
 
-NSSet *CCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotations, CCHMapClusterController *mapClusterController)
+NSSet *YCCHMapClusterControllerClusterAnnotationsForAnnotations(NSArray *annotations, YCCHMapClusterController *mapClusterController)
 {
     NSSet *filteredAnnotations = [NSMutableSet setWithArray:annotations];
     filteredAnnotations = [filteredAnnotations filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         BOOL evaluation = NO;
-        if ([evaluatedObject isKindOfClass:CCHMapClusterAnnotation.class]) {
-            CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)evaluatedObject;
+        if ([evaluatedObject isKindOfClass:YCCHMapClusterAnnotation.class]) {
+            YCCHMapClusterAnnotation *clusterAnnotation = (YCCHMapClusterAnnotation *)evaluatedObject;
             evaluation = (clusterAnnotation.mapClusterController == mapClusterController);
         }
         return evaluation;
@@ -180,7 +180,7 @@ NS_INLINE double originXForLongitudeAtZoomLevel22(CLLocationDegrees longitude)
     return MERCATOR_OFFSET + MERCATOR_RADIUS_SCALE * longitude;
 }
 
-double CCHMapClusterControllerZoomLevelForRegion(CLLocationDegrees longitudeCenter, CLLocationDegrees longitudeDelta, CGFloat width)
+double YCCHMapClusterControllerZoomLevelForRegion(CLLocationDegrees longitudeCenter, CLLocationDegrees longitudeDelta, CGFloat width)
 {
     // Based on http://troybrant.net/blog/2010/01/mkmapview-and-zoom-levels-a-visual-guide/
     // Adjusted so that at zoom level 0, the entire world fits into a single 256 point tile.
@@ -279,7 +279,7 @@ static NSString *hashForCoordinate(CLLocationCoordinate2D coordinate, NSUInteger
     return geohashAsString;
 }
 
-NSArray *CCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotations, NSUInteger maxUniqueLocations)
+NSArray *YCCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotations, NSUInteger maxUniqueLocations)
 {
     NSMutableDictionary *annotationsByGeohash;
     
@@ -307,7 +307,7 @@ NSArray *CCHMapClusterControllerAnnotationSetsByUniqueLocations(NSSet *annotatio
     return [annotationsByGeohash allValues];
 }
 
-BOOL CCHMapClusterControllerIsUniqueLocation(NSSet *annotations)
+BOOL YCCHMapClusterControllerIsUniqueLocation(NSSet *annotations)
 {
     NSString *geohash;
     for (id<MKAnnotation> annotation in annotations) {
