@@ -21,6 +21,6 @@ YMKMapRect YMKMapRectFromMK(MKMapRect rect);
 -(MKMapRect)visibleMapRect;
 - (CLLocationCoordinate2D)convertPoint:(CGPoint)point
                   toCoordinateFromView:(UIView *)view;
--(NSArray*)annotationsInMapRect:(MKMapRect)rect;
+-(NSSet*)annotationsInMapRect:(MKMapRect)rect;
 
 @end

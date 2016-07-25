@@ -206,6 +206,7 @@
 
 - (void)updateDebugPolygonsInGridMapRect:(MKMapRect)gridMapRect withCellMapSize:(double)cellMapSize
 {
+    //Not supported in YandexMapKit
     /*
     YMKMapView *mapView = self.mapView;
      

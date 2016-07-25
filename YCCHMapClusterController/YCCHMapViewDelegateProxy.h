@@ -27,12 +27,12 @@
 #import <MapKit/MapKit.h>
 #import "YandexMapKit.h"
 
-@interface YCCHMapViewDelegateProxy : NSObject<MKMapViewDelegate>
+@interface YCCHMapViewDelegateProxy : NSObject<YMKMapViewDelegate>
 
 @property (nonatomic, readonly) NSHashTable *delegates;
-@property (nonatomic, weak, readonly) NSObject<MKMapViewDelegate> *target;
+@property (nonatomic, weak, readonly) NSObject<YMKMapViewDelegate> *target;
 
-- (instancetype)initWithMapView:(YMKMapView *)mapView delegate:(NSObject<MKMapViewDelegate> *)delegate;
-- (void)addDelegate:(NSObject<MKMapViewDelegate> *)delegate;
+- (instancetype)initWithMapView:(YMKMapView *)mapView delegate:(NSObject<YMKMapViewDelegate> *)delegate;
+- (void)addDelegate:(NSObject<YMKMapViewDelegate> *)delegate;
 
 @end

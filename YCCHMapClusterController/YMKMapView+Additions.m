@@ -63,8 +63,8 @@ MKMapRect YMKMapRectToMK(YMKMapRect r) {
     return ret;
 }
 
--(NSArray*)annotationsInMapRect:(MKMapRect)rect {
-    NSMutableArray* arr = [[NSMutableArray alloc] init];
+-(NSSet*)annotationsInMapRect:(MKMapRect)rect {
+    NSMutableSet* arr = [[NSMutableSet alloc] init];
     for(id<YMKAnnotation> ann in self.annotations) {
         CLLocationCoordinate2D coord = ann.coordinate;
         BOOL isVis = YMKMapRegionContainsMapCoordinate(self.region, coord);

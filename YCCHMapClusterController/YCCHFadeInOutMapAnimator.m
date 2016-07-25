@@ -28,7 +28,7 @@
 #import "YCCHMapClusterController.h"
 
 #import <MapKit/MapKit.h>
-#import "../../../../Pods/YandexMapKit/Headers/YandexMapKit.h"
+#import "YandexMapKit.h"
 
 @implementation YCCHFadeInOutMapAnimator
 
@@ -61,10 +61,10 @@
 - (void)mapClusterController:(YCCHMapClusterController *)mapClusterController willRemoveAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
 #if TARGET_OS_IPHONE
-    MKMapView *mapView = mapClusterController.mapView;
+    YMKMapView *mapView = mapClusterController.mapView;
     [UIView animateWithDuration:self.duration animations:^{
-        for (id<MKAnnotation> annotation in annotations) {
-            MKAnnotationView *annotationView = [mapView viewForAnnotation:annotation];
+        for (id<YMKAnnotation> annotation in annotations) {
+            YMKAnnotationView *annotationView = [mapView viewForAnnotation:annotation];
             annotationView.alpha = 0.0;
         }
     } completion:^(BOOL finished) {

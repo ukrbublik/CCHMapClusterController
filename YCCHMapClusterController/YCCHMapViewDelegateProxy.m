@@ -30,14 +30,14 @@
 @interface YCCHMapViewDelegateProxy()
 
 @property (nonatomic) NSHashTable *delegates;
-@property (nonatomic, weak) NSObject<MKMapViewDelegate> *target;
+@property (nonatomic, weak) NSObject<YMKMapViewDelegate> *target;
 @property (nonatomic, weak) YMKMapView *mapView;
 
 @end
 
 @implementation YCCHMapViewDelegateProxy
 
-- (instancetype)initWithMapView:(YMKMapView *)mapView delegate:(NSObject<MKMapViewDelegate> *)delegate
+- (instancetype)initWithMapView:(YMKMapView *)mapView delegate:(NSObject<YMKMapViewDelegate> *)delegate
 {
     self = [super init];
     if (self) {
@@ -117,7 +117,9 @@
 
 #pragma mark - Map view proxied delegate methods
 
-- (MKOverlayRenderer *)mapView:(YMKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+//Not supported in YandexMapKit
+/*
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 {
     MKOverlayRenderer *renderer;
 	
@@ -141,5 +143,6 @@
     
     return renderer;
 }
+ */
 
 @end
