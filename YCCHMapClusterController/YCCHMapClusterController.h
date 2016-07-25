@@ -27,6 +27,7 @@
 #import <MapKit/MapKit.h>
 #import "YandexMapKit.h"
 
+@class YCCHMapClusterAnnotation;
 @protocol YCCHMapClusterControllerDelegate;
 @protocol YCCHMapClusterer;
 @protocol YCCHMapAnimator;
@@ -97,5 +98,10 @@
  @param longitudinalMeters East-to-west distance used for zooming.
  */
 - (void)selectAnnotation:(id<MKAnnotation>)annotation andZoomToRegionWithLatitudinalMeters:(CLLocationDistance)latitudinalMeters longitudinalMeters:(CLLocationDistance)longitudinalMeters;
+
+/**
+ Zooms to the region that "holds" cluster annotation. Useful as clicking handler.
+ */
+- (void)zoomToRegionOfClusterAnnotation:(YCCHMapClusterAnnotation*)ann;
 
 @end

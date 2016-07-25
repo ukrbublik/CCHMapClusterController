@@ -36,6 +36,8 @@
         _title = [self.delegate mapClusterController:self.mapClusterController titleForMapClusterAnnotation:self];
     } else if(_title == nil && !self.isCluster) {
         _title = self.oneAnnotation.title;
+    } else if(_title == nil && self.isCluster) {
+        _title = [NSString stringWithFormat:@"%u annotations", self.annotations.count];
     }
 
     return _title;

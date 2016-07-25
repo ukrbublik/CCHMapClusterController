@@ -264,6 +264,14 @@
     }
 }
 
+- (void)zoomToRegionOfClusterAnnotation:(YCCHMapClusterAnnotation*)ann {
+    if(ann.isCluster) {
+        [self deselectAllAnnotations];
+        MKCoordinateRegion region = [self.clusterer regionForAnnotations:ann.annotations];
+        [self.mapView setRegion:YMKRegionFromMK(region) animated:YES];
+    }
+}
+
 #pragma mark - Map view proxied delegate methods
 
 - (void)mapView:(YMKMapView *)mapView didAddAnnotationViews:(NSArray *)annotationViews

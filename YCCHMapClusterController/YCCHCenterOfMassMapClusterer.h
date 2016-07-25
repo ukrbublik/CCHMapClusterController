@@ -41,4 +41,11 @@
  */
 - (CLLocationCoordinate2D)mapClusterController:(YCCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect;
 
+/**
+ Returns region holding all annotations.
+ @param annotations annotations in this cluster (annotations are of type `YCCHMapClusterAnnotation`).
+ @return MKCoordinateRegion
+ */
+-(MKCoordinateRegion)regionForAnnotations:(NSSet *)annotations;
+
 @end

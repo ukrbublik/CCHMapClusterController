@@ -24,13 +24,14 @@
 //
 
 #import "YCCHCenterOfMassMapClusterer.h"
+#import "YCCHMapClusterAnnotation.h"
 
 @implementation YCCHCenterOfMassMapClusterer
 
 - (CLLocationCoordinate2D)mapClusterController:(YCCHMapClusterController *)mapClusterController coordinateForAnnotations:(NSSet *)annotations inMapRect:(MKMapRect)mapRect
 {
     double latitude = 0, longitude = 0;
-    for (id<MKAnnotation> annotation in annotations) {
+    for (id<YMKAnnotation> annotation in annotations) {
         latitude += annotation.coordinate.latitude;
         longitude += annotation.coordinate.longitude;
     }
@@ -44,6 +45,23 @@
     }
     
     return coordinate;
+}
+
+-(MKCoordinateRegion)regionForAnnotations:(NSSet *)annotations {
+    MKCoordinateRegion ret;
+    if(annotations.count) {
+        double minLatitude = 1000, minLongitude = 1000, maxLatitude = -1000, maxLongitude = -1000;
+        for (id<YMKAnnotation> annotation in annotations) {
+            minLatitude = MIN(minLatitude, annotation.coordinate.latitude);
+            minLongitude = MIN(minLongitude, annotation.coordinate.longitude);
+            maxLatitude = MAX(maxLatitude, annotation.coordinate.latitude);
+            maxLongitude = MAX(maxLongitude, annotation.coordinate.longitude);
+        }
+        CLLocationCoordinate2D center = CLLocationCoordinate2DMake(minLatitude + (maxLatitude - minLatitude) / 2, minLongitude + (maxLongitude - minLongitude) / 2);
+        MKCoordinateSpan span = MKCoordinateSpanMake((maxLatitude - minLatitude) * 1.2, (maxLongitude - minLongitude) * 1.2);
+        ret = MKCoordinateRegionMake(center, span);
+    }
+    return ret;
 }
 
 @end

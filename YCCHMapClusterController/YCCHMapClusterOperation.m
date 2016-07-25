@@ -156,7 +156,11 @@
                     }
                 }
                 
-                if (annotationForCell == nil) {
+                //Usually you have different reuse ids for regular annotations and group of annotations
+                //So you don't want to reuse annotation view anymore if it became group from regular or vice versa
+                BOOL annotationDidChangeIsCluster = (annotationSet.count == 1) != (annotationForCell.annotations.count == 1);
+                
+                if (annotationDidChangeIsCluster || annotationForCell == nil) {
                     // Create new cluster annotation
                     annotationForCell = [[YCCHMapClusterAnnotation alloc] init];
                     annotationForCell.mapClusterController = _clusterController;
