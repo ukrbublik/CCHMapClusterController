@@ -1,6 +1,6 @@
 //
-//  CCHCenterOfMassMapClustererTests.m
-//  CCHMapClusterController
+//  YCCHCenterOfMassMapClustererTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,23 +23,23 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHCenterOfMassMapClusterer.h"
+#import "YCCHCenterOfMassMapClusterer.h"
 
 #import <XCTest/XCTest.h>
 
-@interface CCHCenterOfMassMapClustererTests : XCTestCase
+@interface YCCHCenterOfMassMapClustererTests : XCTestCase
 
-@property (nonatomic) CCHCenterOfMassMapClusterer *mapClusterer;
+@property (nonatomic) YCCHCenterOfMassMapClusterer *mapClusterer;
 
 @end
 
-@implementation CCHCenterOfMassMapClustererTests
+@implementation YCCHCenterOfMassMapClustererTests
 
 - (void)setUp
 {
     [super setUp];
     
-    self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
+    self.mapClusterer = [[YCCHCenterOfMassMapClusterer alloc] init];
 }
 
 - (void)testCoordinateForAnnotationsNil

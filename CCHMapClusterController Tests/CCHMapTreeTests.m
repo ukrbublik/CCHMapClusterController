@@ -1,6 +1,6 @@
 //
-//  CCHMapTreeTests.m
-//  CCHMapClusterController
+//  YCCHMapTreeTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,8 +23,8 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapTree.h"
-#import "CCHMapClusterControllerUtils.h"
+#import "YCCHMapTree.h"
+#import "YCCHMapClusterControllerUtils.h"
 
 #import <XCTest/XCTest.h>
 
@@ -59,24 +59,24 @@
 }
 @end
 
-@interface CCHMapTreeTests : XCTestCase
+@interface YCCHMapTreeTests : XCTestCase
 
-@property (nonatomic, strong) CCHMapTree *mapTree;
+@property (nonatomic, strong) YCCHMapTree *mapTree;
 
 @end
 
-@implementation CCHMapTreeTests
+@implementation YCCHMapTreeTests
 
 - (void)setUp
 {
     [super setUp];
     
-    self.mapTree = [[CCHMapTree alloc] initWithNodeCapacity:1 minLatitude:-85.0 maxLatitude:85.0 minLongitude:-180.0 maxLongitude:180.0];
+    self.mapTree = [[YCCHMapTree alloc] initWithNodeCapacity:1 minLatitude:-85.0 maxLatitude:85.0 minLongitude:-180.0 maxLongitude:180.0];
 }
 
 - (void)testDealloc
 {
-    CCHMapTree *mapTree = [[CCHMapTree alloc] init];
+    YCCHMapTree *mapTree = [[YCCHMapTree alloc] init];
     MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
     annotation.coordinate = CLLocationCoordinate2DMake(52, 13);
     [mapTree addAnnotations:@[annotation]];
@@ -104,7 +104,7 @@
     XCTAssertEqual(self.mapTree.annotations.count, 1);
 
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSSet *annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 1);
     if (annotations.count > 0) {
@@ -117,7 +117,7 @@
     XCTAssertEqual(self.mapTree.annotations.count, 0);
 
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(52, 13), 1000, 1000);
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSSet *annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 0);
 }
@@ -130,7 +130,7 @@
     XCTAssertEqual(self.mapTree.annotations.count, 1);
     
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation.coordinate, 1000, 1000);
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSSet *annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 1);
     if (annotations.count > 0) {
@@ -148,7 +148,7 @@
     XCTAssertEqual(self.mapTree.annotations.count, (NSUInteger)2);
     
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation0.coordinate, 1000, 1000);
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSSet *annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 2);
     if (annotations.count > 0) {
@@ -166,7 +166,7 @@
     
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(50, 10);
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, 1000, 1000);
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSSet *annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 0);
 }
@@ -181,7 +181,7 @@
     XCTAssertEqual(self.mapTree.annotations.count, 2);
     
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000);
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSSet *annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 1);
     if (annotations.count > 0) {
@@ -203,14 +203,14 @@
     [self.mapTree removeAnnotations:@[annotation0]];
     XCTAssertEqual(self.mapTree.annotations.count, 2);
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(annotation0.coordinate, 1000, 1000);
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     NSSet *annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 0);
 
     [self.mapTree removeAnnotations:@[annotation2]];
     XCTAssertEqual(self.mapTree.annotations.count, 1);
     region = MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000);
-    mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 1);
     if (annotations.count > 0) {
@@ -220,7 +220,7 @@
     [self.mapTree removeAnnotations:@[annotation1]];
     XCTAssertEqual(self.mapTree.annotations.count, 0);
     region = MKCoordinateRegionMakeWithDistance(annotation1.coordinate, 1000, 1000);
-    mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     annotations = [self.mapTree annotationsInMapRect:mapRect];
     XCTAssertEqual(annotations.count, 0);
 }

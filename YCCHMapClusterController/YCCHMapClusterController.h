@@ -91,6 +91,13 @@
  */
 - (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
 
+/**
+ Replaces annotations and immediately updates clustering.
+ @param annotations Annotations to replace.
+ @param completionHandler Called when the clustering finished updating.
+ */
+- (void)replaceAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler;
+
 /** 
  Zooms to the position of the cluster that contains the given annotation and selects the cluster's annotation view.
  @param annotation The annotation to look for. Uses `isEqual:` to check for a matching annotation previously added with `addAnnotations:withCompletionHandler:`.
@@ -103,5 +110,10 @@
  Zooms to the region that "holds" cluster annotation. Useful as clicking handler.
  */
 - (void)zoomToRegionOfClusterAnnotation:(YCCHMapClusterAnnotation*)ann;
+
+/**
+ Useful to call on -viewDidAppear
+ */
+- (void)refreshAnnotations;
 
 @end

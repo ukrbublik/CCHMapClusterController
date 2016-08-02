@@ -8,9 +8,67 @@
 
 #import <UIKit/UIKit.h>
 #import "YMKMapView+Additions.h"
+#import <objc/runtime.h>
 
 @implementation YMKMapView (Additions)
 
+#pragma mark - Internal views: YXScrollView, YMKMapOverlayView
+- (UIScrollView<UIScrollViewDelegate>*)xScrollView {
+    return objc_getAssociatedObject(self, @selector(xScrollView));
+}
+- (void)setXScrollView:(UIScrollView<UIScrollViewDelegate>*)xScrollView_ {
+    objc_setAssociatedObject(self, @selector(xScrollView), xScrollView_, OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (UIScrollView<UIScrollViewDelegate>*)mapOverlayView {
+    return objc_getAssociatedObject(self, @selector(mapOverlayView));
+}
+- (void)setMapOverlayView:(UIScrollView<UIScrollViewDelegate>*)mapOverlayView_ {
+    objc_setAssociatedObject(self, @selector(mapOverlayView), mapOverlayView_, OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    [self findYXScrollView];
+}
+
+-(void)findYXScrollView {
+    if(!self.xScrollView) {
+        for(UIView* v in self.subviews) {
+            if([NSStringFromClass(v.class) isEqualToString:@"YXScrollView"]) {
+                self.xScrollView = (UIScrollView<UIScrollViewDelegate>*) v;
+                [self findYMKMapOverlayView];
+                break;
+            }
+        }
+    }
+}
+
+-(void)findYMKMapOverlayView {
+    if(!self.mapOverlayView && self.xScrollView) {
+        for(UIView* v in self.xScrollView.subviews) {
+            if([NSStringFromClass(v.class) isEqualToString:@"YMKMapOverlayView"]) {
+                self.mapOverlayView = (UIView*) v;
+                break;
+            }
+        }
+    }
+}
+
+#pragma mark - Adding and Inserting Overlays
+- (NSArray<id<MKOverlay>>*)overlays {
+    return objc_getAssociatedObject(self, @selector(overlays));
+}
+- (void)setOverlays:(NSArray<id<MKOverlay>>*)overlays_ {
+    objc_setAssociatedObject(self, @selector(overlays), overlays_, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (void)addOverlay:(id<MKOverlay>)overlay {
+    //todo
+}
+
+#pragma mark - Compatibility with MKMapKit
 -(MKMapRect)visibleMapRect {
     YMKMapRect r = YMKMapRectFromMapRegion(self.region);
     MKMapRect ret = YMKMapRectToMK(r);

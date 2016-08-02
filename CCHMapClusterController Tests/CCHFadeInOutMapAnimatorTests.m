@@ -1,6 +1,6 @@
 //
-//  CCHFadeInOutMapAnimatorTests.m
-//  CCHMapClusterController
+//  YCCHFadeInOutMapAnimatorTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2014 Claus Höfele
 //
@@ -23,25 +23,25 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHFadeInOutMapAnimator.h"
+#import "YCCHFadeInOutMapAnimator.h"
 
 #import <XCTest/XCTest.h>
 #import <MapKit/MapKit.h>
 
-@interface CCHFadeInOutMapAnimatorTests : XCTestCase
+@interface YCCHFadeInOutMapAnimatorTests : XCTestCase
 
-@property (nonatomic) CCHFadeInOutMapAnimator *animator;
+@property (nonatomic) YCCHFadeInOutMapAnimator *animator;
 @property (nonatomic) BOOL done;
 
 @end
 
-@implementation CCHFadeInOutMapAnimatorTests
+@implementation YCCHFadeInOutMapAnimatorTests
 
 - (void)setUp
 {
     [super setUp];
 
-    self.animator = [[CCHFadeInOutMapAnimator alloc] init];
+    self.animator = [[YCCHFadeInOutMapAnimator alloc] init];
     self.done = NO;
 }
 

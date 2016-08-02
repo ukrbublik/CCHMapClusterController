@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterControllerUtilsTests.m
-//  CCHMapClusterController
+//  YCCHMapClusterControllerUtilsTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,28 +23,28 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapClusterControllerUtils.h"
-#import "CCHMapClusterAnnotation.h"
+#import "YCCHMapClusterControllerUtils.h"
+#import "YCCHMapClusterAnnotation.h"
 
 #import <XCTest/XCTest.h>
 
-@interface CCHMapClusterControllerUtilsTests : XCTestCase
+@interface YCCHMapClusterControllerUtilsTests : XCTestCase
 
 @end
 
-@implementation CCHMapClusterControllerUtilsTests
+@implementation YCCHMapClusterControllerUtilsTests
 
 - (void)testAlignToCellSize
 {
     MKMapRect mapRect = MKMapRectMake(0, 0, 15, 20);
-    MKMapRect adjustedMapRect = CCHMapClusterControllerAlignMapRectToCellSize(mapRect, 5);
+    MKMapRect adjustedMapRect = YCCHMapClusterControllerAlignMapRectToCellSize(mapRect, 5);
     XCTAssertEqual(adjustedMapRect.origin.x, 0.0);
     XCTAssertEqual(adjustedMapRect.origin.y, 0.0);
     XCTAssertEqual(adjustedMapRect.size.width, 15.0);
     XCTAssertEqual(adjustedMapRect.size.height, 20.0);
 
     mapRect = MKMapRectMake(8, 8, 15, 20);
-    adjustedMapRect = CCHMapClusterControllerAlignMapRectToCellSize(mapRect, 6);
+    adjustedMapRect = YCCHMapClusterControllerAlignMapRectToCellSize(mapRect, 6);
     XCTAssertEqual(adjustedMapRect.origin.x, 6.0);
     XCTAssertEqual(adjustedMapRect.origin.y, 6.0);
     XCTAssertEqual(adjustedMapRect.size.width, 18.0);
@@ -58,22 +58,22 @@
     NSMutableSet *visibleAnnotations = [NSMutableSet set];
     
     // Empty cluster
-    CCHMapClusterAnnotation *clusterAnnotationEmpty = [[CCHMapClusterAnnotation alloc] init];
+    YCCHMapClusterAnnotation *clusterAnnotationEmpty = [[YCCHMapClusterAnnotation alloc] init];
     [visibleAnnotations addObject:clusterAnnotationEmpty];
-    CCHMapClusterAnnotation *visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
+    YCCHMapClusterAnnotation *visibleAnnotation = YCCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
     XCTAssertNil(visibleAnnotation);
     
     // Cluster does not contain annotation
-    CCHMapClusterAnnotation *clusterAnnotationDoesNotContain = [[CCHMapClusterAnnotation alloc] init];
+    YCCHMapClusterAnnotation *clusterAnnotationDoesNotContain = [[YCCHMapClusterAnnotation alloc] init];
     [visibleAnnotations addObject:clusterAnnotationDoesNotContain];
-    visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
+    visibleAnnotation = YCCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
     XCTAssertNil(visibleAnnotation);
     
     // Cluster does contain annotation
-    CCHMapClusterAnnotation *clusterAnnotationContains = [[CCHMapClusterAnnotation alloc] init];
+    YCCHMapClusterAnnotation *clusterAnnotationContains = [[YCCHMapClusterAnnotation alloc] init];
     clusterAnnotationContains.annotations = [NSSet setWithObjects:[[MKPointAnnotation alloc] init], pointAnnotation, [[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init], nil];
     [visibleAnnotations addObject:clusterAnnotationContains];
-    visibleAnnotation = CCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
+    visibleAnnotation = YCCHMapClusterControllerFindVisibleAnnotation(annotations, visibleAnnotations);
     XCTAssertEqualObjects(clusterAnnotationContains, visibleAnnotation);
 }
 
@@ -85,7 +85,7 @@
     double length = 100;
     
     // Heading north
-    double mapLengthNorth = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    double mapLengthNorth = YCCHMapClusterControllerMapLengthForLength(mapView, nil, length);
     MKMapRect visibleMapRect = mapView.visibleMapRect;
     XCTAssert(mapLengthNorth > 0);
     XCTAssertEqualWithAccuracy(mapLengthNorth, visibleMapRect.size.width / 2.0, __FLT_EPSILON__);
@@ -94,19 +94,19 @@
     MKMapCamera *camera = mapView.camera;
     camera.heading = 90;
     mapView.camera = camera;
-    double mapLengthEast = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    double mapLengthEast = YCCHMapClusterControllerMapLengthForLength(mapView, nil, length);
     XCTAssertEqualWithAccuracy(mapLengthEast, mapLengthNorth, __FLT_EPSILON__);
     
     // Heading south
     camera.heading = 180;
     mapView.camera = camera;
-    double mapLengthSouth = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    double mapLengthSouth = YCCHMapClusterControllerMapLengthForLength(mapView, nil, length);
     XCTAssertEqualWithAccuracy(mapLengthSouth, mapLengthNorth, __FLT_EPSILON__);
     
     // Heading west
     camera.heading = 270;
     mapView.camera = camera;
-    double mapLengthWest = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    double mapLengthWest = YCCHMapClusterControllerMapLengthForLength(mapView, nil, length);
     XCTAssertEqualWithAccuracy(mapLengthWest, mapLengthNorth, __FLT_EPSILON__);
 }
 
@@ -118,7 +118,7 @@
     double length = 100;
     
     // Heading north
-    double mapLengthNorth = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    double mapLengthNorth = YCCHMapClusterControllerMapLengthForLength(mapView, nil, length);
     MKMapRect visibleMapRect = mapView.visibleMapRect;
     XCTAssert(mapLengthNorth > 0);
     XCTAssertEqualWithAccuracy(mapLengthNorth, visibleMapRect.size.width / 2.0, 2 * __FLT_EPSILON__);
@@ -127,32 +127,32 @@
     MKMapCamera *camera = mapView.camera;
     camera.heading = 90;
     mapView.camera = camera;
-    double mapLengthEast = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    double mapLengthEast = YCCHMapClusterControllerMapLengthForLength(mapView, nil, length);
     XCTAssertEqualWithAccuracy(mapLengthEast, mapLengthNorth, 2 * __FLT_EPSILON__);
     
     // Heading south
     camera.heading = 180;
     mapView.camera = camera;
-    double mapLengthSouth = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    double mapLengthSouth = YCCHMapClusterControllerMapLengthForLength(mapView, nil, length);
     XCTAssertEqualWithAccuracy(mapLengthSouth, mapLengthNorth, 2 * __FLT_EPSILON__);
     
     // Heading west
     camera.heading = 270;
     mapView.camera = camera;
-    double mapLengthWest = CCHMapClusterControllerMapLengthForLength(mapView, nil, length);
+    double mapLengthWest = YCCHMapClusterControllerMapLengthForLength(mapView, nil, length);
     XCTAssertEqualWithAccuracy(mapLengthWest, mapLengthNorth, 2 * __FLT_EPSILON__);
 }
 
 - (void)testAlignMapLengthToWorldWidth
 {
     double mapLength = 10000.1;
-    double alignedMapLength = CCHMapClusterControllerAlignMapLengthToWorldWidth(mapLength);
+    double alignedMapLength = YCCHMapClusterControllerAlignMapLengthToWorldWidth(mapLength);
     XCTAssertTrue(alignedMapLength > mapLength);
     double factor = MKMapSizeWorld.width / alignedMapLength;
     XCTAssertEqualWithAccuracy(factor, floor(factor), __FLT_EPSILON__);
 
     mapLength = 123456789.0123;
-    alignedMapLength = CCHMapClusterControllerAlignMapLengthToWorldWidth(mapLength);
+    alignedMapLength = YCCHMapClusterControllerAlignMapLengthToWorldWidth(mapLength);
     XCTAssertTrue(alignedMapLength > mapLength, @"Wrong aligned map length");
     factor = MKMapSizeWorld.width / alignedMapLength;
     XCTAssertEqualWithAccuracy(factor, floor(factor), __FLT_EPSILON__);
@@ -162,19 +162,19 @@
 {
     // Same struct
     CLLocationCoordinate2D coordinate0 = CLLocationCoordinate2DMake(5.12, -0.72);
-    XCTAssertTrue(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate0, coordinate0));
+    XCTAssertTrue(YCCHMapClusterControllerCoordinateEqualToCoordinate(coordinate0, coordinate0));
     
     // Equal struct
     CLLocationCoordinate2D coordinate1 = CLLocationCoordinate2DMake(5.12, -0.72);
-    XCTAssertTrue(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate0, coordinate1));
+    XCTAssertTrue(YCCHMapClusterControllerCoordinateEqualToCoordinate(coordinate0, coordinate1));
 
     // Longitude different
     CLLocationCoordinate2D coordinate2 = CLLocationCoordinate2DMake(5.12, -0.73);
-    XCTAssertFalse(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate1, coordinate2));
+    XCTAssertFalse(YCCHMapClusterControllerCoordinateEqualToCoordinate(coordinate1, coordinate2));
 
     // Latitude different
     CLLocationCoordinate2D coordinate3 = CLLocationCoordinate2DMake(5.11, -0.72);
-    XCTAssertFalse(CCHMapClusterControllerCoordinateEqualToCoordinate(coordinate1, coordinate3));
+    XCTAssertFalse(YCCHMapClusterControllerCoordinateEqualToCoordinate(coordinate1, coordinate3));
 }
 
 - (MKMapRect)mapRectForCoordinateRegion:(MKCoordinateRegion)coordinateRegion
@@ -208,7 +208,7 @@
     MKMapRect mapRect = MKMapRectMake(10000000, 10000000, 20000000, 20000000);
     MKCoordinateRegion coordinateRegion = MKCoordinateRegionForMapRect(mapRect);
 
-    CCHMapClusterAnnotation *mapClusterAnnotation = [[CCHMapClusterAnnotation alloc] init];
+    YCCHMapClusterAnnotation *mapClusterAnnotation = [[YCCHMapClusterAnnotation alloc] init];
     mapClusterAnnotation.coordinate = coordinateRegion.center;
     MKMapView *mapView = [[MKMapView alloc] init];
     [mapView addAnnotation:mapClusterAnnotation];
@@ -216,17 +216,17 @@
     MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
     
     // Cluster annotation doesn't contain annotation
-    CCHMapClusterAnnotation *mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
+    YCCHMapClusterAnnotation *mapClusterAnnotationFound = YCCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
     XCTAssertNil(mapClusterAnnotationFound);
     
     // Cluster annotation contains annotation
     mapClusterAnnotation.annotations = [NSSet setWithObject:annotation];
-    mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
+    mapClusterAnnotationFound = YCCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
     XCTAssertEqualObjects(mapClusterAnnotation, mapClusterAnnotationFound);
 
     // Cluster annotation outside map rect
     mapClusterAnnotation.coordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude + 1.2 * coordinateRegion.span.latitudeDelta, coordinateRegion.center.longitude);
-    mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
+    mapClusterAnnotationFound = YCCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
     XCTAssertNil(mapClusterAnnotationFound);
 }
 
@@ -238,22 +238,22 @@
     MKMapView *mapView = [[MKMapView alloc] init];
     MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
     
-    CCHMapClusterAnnotation *mapClusterAnnotation0 = [[CCHMapClusterAnnotation alloc] init];
+    YCCHMapClusterAnnotation *mapClusterAnnotation0 = [[YCCHMapClusterAnnotation alloc] init];
     mapClusterAnnotation0.coordinate = coordinateRegion.center;
     mapClusterAnnotation0.annotations = [NSSet setWithObjects:[[MKPointAnnotation alloc] init], annotation, [[MKPointAnnotation alloc] init], nil];
     [mapView addAnnotation:mapClusterAnnotation0];
 
-    CCHMapClusterAnnotation *mapClusterAnnotation1 = [[CCHMapClusterAnnotation alloc] init];
+    YCCHMapClusterAnnotation *mapClusterAnnotation1 = [[YCCHMapClusterAnnotation alloc] init];
     mapClusterAnnotation1.coordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude + 0.5, coordinateRegion.center.longitude + 0.5);
     mapClusterAnnotation1.annotations = [NSSet setWithObjects:[[MKPointAnnotation alloc] init], [[MKPointAnnotation alloc] init], nil];
     [mapView addAnnotation:mapClusterAnnotation1];
 
-    CCHMapClusterAnnotation *mapClusterAnnotation2 = [[CCHMapClusterAnnotation alloc] init];
+    YCCHMapClusterAnnotation *mapClusterAnnotation2 = [[YCCHMapClusterAnnotation alloc] init];
     mapClusterAnnotation2.coordinate = CLLocationCoordinate2DMake(coordinateRegion.center.latitude - 0.5, coordinateRegion.center.longitude - 0.5);
     mapClusterAnnotation2.annotations = [NSSet setWithObject:[[MKPointAnnotation alloc] init]];
     [mapView addAnnotation:mapClusterAnnotation2];
     
-    CCHMapClusterAnnotation *mapClusterAnnotationFound = CCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
+    YCCHMapClusterAnnotation *mapClusterAnnotationFound = YCCHMapClusterControllerClusterAnnotationForAnnotation(mapView, annotation, mapRect);
     XCTAssertEqualObjects(mapClusterAnnotation0, mapClusterAnnotationFound);
 }
 
@@ -261,7 +261,7 @@
 {
     MKMapRect mapRect = MKMapRectMake(0, 0, 100, 100);
     __block NSUInteger numCalls = 0;
-    CCHMapClusterControllerEnumerateCells(mapRect, 10, ^(MKMapRect cellRect) {
+    YCCHMapClusterControllerEnumerateCells(mapRect, 10, ^(MKMapRect cellRect) {
         numCalls++;
         
         XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__);
@@ -274,7 +274,7 @@
 {
     MKMapRect mapRect = MKMapRectMake(0, 0, 95, 95);
     __block NSUInteger numCalls = 0;
-    CCHMapClusterControllerEnumerateCells(mapRect, 10, ^(MKMapRect cellRect) {
+    YCCHMapClusterControllerEnumerateCells(mapRect, 10, ^(MKMapRect cellRect) {
         numCalls++;
         
         XCTAssertEqualWithAccuracy(cellRect.size.height, 10, __FLT_EPSILON__);
@@ -289,7 +289,7 @@
     MKCoordinateSpan span = MKCoordinateSpanMake(3, 4);
     MKCoordinateRegion region = MKCoordinateRegionMake(coordinate, span);
     
-    MKMapRect mapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect mapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     MKCoordinateRegion regionConverted = MKCoordinateRegionForMapRect(mapRect);
     
     // Pretty inaccurate
@@ -301,27 +301,27 @@
 
 - (void)testFilterAnnotationsNil
 {
-    NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(nil, nil);
+    NSSet *filteredAnnotations = YCCHMapClusterControllerClusterAnnotationsForAnnotations(nil, nil);
     XCTAssertEqual(filteredAnnotations.count, 0);
 }
 
 - (void)testFilterAnnotations
 {
     MKPointAnnotation *pointAnnotation = [[MKPointAnnotation alloc] init];
-    CCHMapClusterAnnotation *clusterAnnotation = [[CCHMapClusterAnnotation alloc] init];
+    YCCHMapClusterAnnotation *clusterAnnotation = [[YCCHMapClusterAnnotation alloc] init];
     NSArray *annotations = @[pointAnnotation, clusterAnnotation];
-    NSSet *filteredAnnotations = CCHMapClusterControllerClusterAnnotationsForAnnotations(annotations, nil);
+    NSSet *filteredAnnotations = YCCHMapClusterControllerClusterAnnotationsForAnnotations(annotations, nil);
     XCTAssertEqual(filteredAnnotations.count, 1);
     XCTAssertEqualObjects(filteredAnnotations.anyObject, clusterAnnotation);
 }
 
 - (void)testZoomLevelForRegion
 {
-    double zoomLevel = CCHMapClusterControllerZoomLevelForRegion(0, 360, 256);
+    double zoomLevel = YCCHMapClusterControllerZoomLevelForRegion(0, 360, 256);
     XCTAssertEqualWithAccuracy(zoomLevel, 0, __FLT_EPSILON__);
-    zoomLevel = CCHMapClusterControllerZoomLevelForRegion(0, 180, 256);
+    zoomLevel = YCCHMapClusterControllerZoomLevelForRegion(0, 180, 256);
     XCTAssertEqualWithAccuracy(zoomLevel, 1, __FLT_EPSILON__);
-    zoomLevel = CCHMapClusterControllerZoomLevelForRegion(180, 180, 256);
+    zoomLevel = YCCHMapClusterControllerZoomLevelForRegion(180, 180, 256);
     XCTAssertEqualWithAccuracy(zoomLevel, 1, __FLT_EPSILON__);
 }
 
@@ -331,7 +331,7 @@
     annotation0.coordinate = CLLocationCoordinate2DMake(51.0, 13.0);
 
     NSSet *annotations = [NSSet setWithArray:@[annotation0]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
+    NSArray *uniqueAnnotations = YCCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
     
     XCTAssertEqual(uniqueAnnotations.count, 1);
     XCTAssertEqual([uniqueAnnotations[0] count], 1);
@@ -346,7 +346,7 @@
     annotation1.coordinate = annotation0.coordinate;
 
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
+    NSArray *uniqueAnnotations = YCCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
     
     XCTAssertEqual(uniqueAnnotations.count, 1);
     XCTAssertEqual([uniqueAnnotations[0] count], 2);
@@ -360,7 +360,7 @@
     annotation1.coordinate = CLLocationCoordinate2DMake(annotation0.coordinate.latitude + __FLT_EPSILON__, annotation0.coordinate.longitude + __FLT_EPSILON__);
     
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
+    NSArray *uniqueAnnotations = YCCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
     
     XCTAssertEqual(uniqueAnnotations.count, 1);
     XCTAssertEqual([uniqueAnnotations[0] count], 2);
@@ -374,7 +374,7 @@
     annotation1.coordinate = CLLocationCoordinate2DMake(52.1, 13.1);
     
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
+    NSArray *uniqueAnnotations = YCCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, NSUIntegerMax);
     
     XCTAssertEqual(uniqueAnnotations.count, 2);
 }
@@ -387,7 +387,7 @@
     annotation1.coordinate = CLLocationCoordinate2DMake(52.1, 13.1);
     
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    NSArray *uniqueAnnotations = CCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, 1);
+    NSArray *uniqueAnnotations = YCCHMapClusterControllerAnnotationSetsByUniqueLocations(annotations, 1);
     
     XCTAssertNil(uniqueAnnotations);
 }
@@ -400,14 +400,14 @@
     annotation1.coordinate = annotation0.coordinate;
     
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    BOOL isUniqueLocation = CCHMapClusterControllerIsUniqueLocation(annotations);
+    BOOL isUniqueLocation = YCCHMapClusterControllerIsUniqueLocation(annotations);
     
     XCTAssertTrue(isUniqueLocation);
 }
 
 - (void)testIsUniqueLocationNil
 {
-    BOOL isUniqueLocation = CCHMapClusterControllerIsUniqueLocation(nil);
+    BOOL isUniqueLocation = YCCHMapClusterControllerIsUniqueLocation(nil);
     
     XCTAssertFalse(isUniqueLocation);
 }
@@ -420,7 +420,7 @@
     annotation1.coordinate = CLLocationCoordinate2DMake(52.0, 13.1);
     
     NSSet *annotations = [NSSet setWithArray:@[annotation0, annotation1]];
-    BOOL isUniqueLocation = CCHMapClusterControllerIsUniqueLocation(annotations);
+    BOOL isUniqueLocation = YCCHMapClusterControllerIsUniqueLocation(annotations);
     
     XCTAssertFalse(isUniqueLocation);
 }

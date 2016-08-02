@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterControllerTests.m
-//  CCHMapClusterController
+//  YCCHMapClusterControllerTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,28 +23,28 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapClusterController.h"
-#import "CCHMapClusterAnnotation.h"
-#import "CCHFadeInOutMapAnimator.h"
-#import "CCHMapClusterControllerUtils.h"
+#import "YCCHMapClusterController.h"
+#import "YCCHMapClusterAnnotation.h"
+#import "YCCHFadeInOutMapAnimator.h"
+#import "YCCHMapClusterControllerUtils.h"
 
 #import <XCTest/XCTest.h>
 
-@interface CCHMapClusterControllerTests : XCTestCase
+@interface YCCHMapClusterControllerTests : XCTestCase
 
 @property (nonatomic) MKMapView *mapView;
-@property (nonatomic) CCHMapClusterController *mapClusterController;
+@property (nonatomic) YCCHMapClusterController *mapClusterController;
 
 @end
 
-@implementation CCHMapClusterControllerTests
+@implementation YCCHMapClusterControllerTests
 
 - (void)setUp
 {
     [super setUp];
 
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, 300, 300)];
-    self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+    self.mapClusterController = [[YCCHMapClusterController alloc] initWithMapView:self.mapView];
 }
 
 - (void)testAddAnnotationsNil
@@ -81,7 +81,7 @@
 
     // Grid spanning 51-54 lng, 12-15 lat
     MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(52.5, 13.5), MKCoordinateSpanMake(3, 3));
-    MKMapRect visibleMapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect visibleMapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     self.mapView.visibleMapRect = visibleMapRect;
 
     // Bottom left
@@ -118,14 +118,14 @@
     MKMapRect bottomLeftMapRect = MKMapRectMake(cellOrigin.x, cellOrigin.y + 2 * cellHeight, cellWidth, cellHeight);
     NSSet *annotationsInMapRect = [self.mapView annotationsInMapRect:bottomLeftMapRect];
     XCTAssertEqual(annotationsInMapRect.count, 1);
-    CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
+    YCCHMapClusterAnnotation *clusterAnnotation = (YCCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
     XCTAssertEqual(clusterAnnotation.annotations.count, 1);
 
     // Check top right
     MKMapRect topRightMapRect = MKMapRectMake(cellOrigin.x + 2 * cellWidth, cellOrigin.y, cellWidth, cellHeight);
     annotationsInMapRect = [self.mapView annotationsInMapRect:topRightMapRect];
     XCTAssertEqual(annotationsInMapRect.count, 1);
-    clusterAnnotation = (CCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
+    clusterAnnotation = (YCCHMapClusterAnnotation *)annotationsInMapRect.anyObject;
     XCTAssertEqual(clusterAnnotation.annotations.count, 5);
 
     // Check center
@@ -143,7 +143,7 @@
     
     // Grid spanning 51-54 lng, 12-15 lat
     MKCoordinateRegion region = MKCoordinateRegionMake(CLLocationCoordinate2DMake(52.5, 13.5), MKCoordinateSpanMake(3, 3));
-    MKMapRect visibleMapRect = CCHMapClusterControllerMapRectForCoordinateRegion(region);
+    MKMapRect visibleMapRect = YCCHMapClusterControllerMapRectForCoordinateRegion(region);
     self.mapView.visibleMapRect = visibleMapRect;
     
     // Bottom left
@@ -232,8 +232,8 @@
 
     NSMutableArray *annotations = [NSMutableArray arrayWithArray:self.mapView.annotations];
     [annotations removeObject:nonClusteredAnnotation];
-    XCTAssertTrue([annotations.lastObject isKindOfClass:CCHMapClusterAnnotation.class]);
-    CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotations.lastObject;
+    XCTAssertTrue([annotations.lastObject isKindOfClass:YCCHMapClusterAnnotation.class]);
+    YCCHMapClusterAnnotation *clusterAnnotation = (YCCHMapClusterAnnotation *)annotations.lastObject;
     XCTAssertTrue([clusterAnnotation.annotations containsObject:clusteredAnnotation]);
 }
 
@@ -253,7 +253,7 @@
     [self waitForExpectationsWithTimeout:10 handler:NULL];
 
     expectation = [self expectationWithDescription:NSStringFromSelector(_cmd)];
-    CCHMapClusterController *mapClusterController2 = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+    YCCHMapClusterController *mapClusterController2 = [[YCCHMapClusterController alloc] initWithMapView:self.mapView];
     [mapClusterController2 addAnnotations:@[clusteredAnnotation] withCompletionHandler:^{
         [expectation fulfill];
     }];
@@ -261,11 +261,11 @@
     
     XCTAssertEqual(self.mapView.annotations.count, 2);
     
-    CCHMapClusterAnnotation *annotation0 = self.mapView.annotations[0];
-    XCTAssertTrue([annotation0 isKindOfClass:CCHMapClusterAnnotation.class]);
+    YCCHMapClusterAnnotation *annotation0 = self.mapView.annotations[0];
+    XCTAssertTrue([annotation0 isKindOfClass:YCCHMapClusterAnnotation.class]);
     XCTAssertTrue([annotation0.annotations containsObject:clusteredAnnotation]);
-    CCHMapClusterAnnotation *annotation1 = self.mapView.annotations[1];
-    XCTAssertTrue([annotation1 isKindOfClass:CCHMapClusterAnnotation.class]);
+    YCCHMapClusterAnnotation *annotation1 = self.mapView.annotations[1];
+    XCTAssertTrue([annotation1 isKindOfClass:YCCHMapClusterAnnotation.class]);
     XCTAssertTrue([annotation1.annotations containsObject:clusteredAnnotation]);
 }
 
@@ -372,7 +372,7 @@
 #if TARGET_OS_IPHONE
 - (void)testFadeInOut
 {
-    CCHFadeInOutMapAnimator *animator = [[CCHFadeInOutMapAnimator alloc] init];
+    YCCHFadeInOutMapAnimator *animator = [[YCCHFadeInOutMapAnimator alloc] init];
     self.mapClusterController.animator = animator;
     
     MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
@@ -387,7 +387,7 @@
     }];
     [self waitForExpectationsWithTimeout:10 handler:NULL];
     
-    CCHMapClusterAnnotation *clusterAnnotation = [self.mapView.annotations lastObject];
+    YCCHMapClusterAnnotation *clusterAnnotation = [self.mapView.annotations lastObject];
     MKAnnotationView *annotationView = [self.mapView viewForAnnotation:clusterAnnotation];
     XCTAssertEqualWithAccuracy(annotationView.alpha, 1.0, __FLT_EPSILON__);
     

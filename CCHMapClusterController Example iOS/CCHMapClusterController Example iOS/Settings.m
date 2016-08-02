@@ -1,6 +1,6 @@
 //
 //  Settings.m
-//  CCHMapClusterController Example iOS
+//  YCCHMapClusterController Example iOS
 //
 //  Created by Claus Höfele on 08.02.14.
 //  Copyright (c) 2014 Claus Höfele. All rights reserved.

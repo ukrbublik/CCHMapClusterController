@@ -1,6 +1,6 @@
 //
-//  CCHMapViewDelegateProxyTests.m
-//  CCHMapClusterController
+//  YCCHMapViewDelegateProxyTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2014 Claus Höfele
 //
@@ -23,7 +23,7 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapViewDelegateProxy.h"
+#import "YCCHMapViewDelegateProxy.h"
 
 #import <XCTest/XCTest.h>
 #import <MapKit/MapKit.h>
@@ -37,13 +37,13 @@
 }
 @end
 
-@interface CCHMapViewDelegateProxyTests : XCTestCase
+@interface YCCHMapViewDelegateProxyTests : XCTestCase
 
 @property (nonatomic) MKMapView *mapView;
 
 @end
 
-@implementation CCHMapViewDelegateProxyTests
+@implementation YCCHMapViewDelegateProxyTests
 
 - (void)setUp
 {
@@ -58,7 +58,7 @@
     self.mapView.delegate = mapViewDelegate;
 
     MapViewDelegate *proxyDelegate = [[MapViewDelegate alloc] init];
-    CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
+    YCCHMapViewDelegateProxy *mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
     XCTAssertEqual(self.mapView.delegate, mapViewDelegateProxy);
     XCTAssertEqual(mapViewDelegateProxy.target, mapViewDelegate);
     XCTAssertEqual(mapViewDelegateProxy.delegates.count, 1);
@@ -71,7 +71,7 @@
     self.mapView.delegate = mapViewDelegate;
     
     MapViewDelegate *proxyDelegate = [[MapViewDelegate alloc] init];
-    CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
+    YCCHMapViewDelegateProxy *mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
     
     self.mapView.delegate = nil;
     
@@ -84,7 +84,7 @@
 - (void)testMapViewNilDelegate
 {
     MapViewDelegate *proxyDelegate = [[MapViewDelegate alloc] init];
-    CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
+    YCCHMapViewDelegateProxy *mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
     XCTAssertEqual(self.mapView.delegate, mapViewDelegateProxy);
     XCTAssertNil(mapViewDelegateProxy.target);
     XCTAssertEqual(mapViewDelegateProxy.delegates.count, 1);
@@ -94,7 +94,7 @@
 - (void)testMapViewNilDelegateChangeToInstance
 {
     MapViewDelegate *proxyDelegate = [[MapViewDelegate alloc] init];
-    CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
+    YCCHMapViewDelegateProxy *mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
     
     MapViewDelegate *mapViewDelegate = [[MapViewDelegate alloc] init];
     self.mapView.delegate = mapViewDelegate;
@@ -112,7 +112,7 @@
     
     @autoreleasepool {
         MapViewDelegate *proxyDelegate = [[MapViewDelegate alloc] init];
-        CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
+        YCCHMapViewDelegateProxy *mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate];
         XCTAssertEqual(mapViewDelegateProxy.target, mapViewDelegate);
     }
 
@@ -122,11 +122,11 @@
 - (void)testDeallocMapView
 {
     MapViewDelegate *proxyDelegate = [[MapViewDelegate alloc] init];
-    CCHMapViewDelegateProxy *mapViewDelegateProxy;
+    YCCHMapViewDelegateProxy *mapViewDelegateProxy;
 
     @autoreleasepool {
         MKMapView *mapView = [[MKMapView alloc] init];
-        mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:proxyDelegate];
+        mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:proxyDelegate];
     }
     
     XCTAssertNil(mapViewDelegateProxy.target);
@@ -139,7 +139,7 @@
     self.mapView.delegate = mapViewDelegate;
     
     MapViewDelegate *proxyDelegate0 = [[MapViewDelegate alloc] init];
-    CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate0];
+    YCCHMapViewDelegateProxy *mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate0];
     MapViewDelegate *proxyDelegate1 = [[MapViewDelegate alloc] init];
     [mapViewDelegateProxy addDelegate:proxyDelegate1];
     
@@ -155,7 +155,7 @@
     
     @autoreleasepool {
         MapViewDelegate *proxyDelegate0 = [[MapViewDelegate alloc] init];
-        CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate0];
+        YCCHMapViewDelegateProxy *mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate0];
         MapViewDelegate *proxyDelegate1 = [[MapViewDelegate alloc] init];
         [mapViewDelegateProxy addDelegate:proxyDelegate1];
     }
@@ -168,7 +168,7 @@
     MapViewDelegate *mapViewDelegate = [[MapViewDelegate alloc] init];
     self.mapView.delegate = mapViewDelegate;
     MapViewDelegate *proxyDelegate0 = [[MapViewDelegate alloc] init];
-    CCHMapViewDelegateProxy *mapViewDelegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate0];
+    YCCHMapViewDelegateProxy *mapViewDelegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:self.mapView delegate:proxyDelegate0];
     MapViewDelegate *proxyDelegate1 = [[MapViewDelegate alloc] init];
     [mapViewDelegateProxy addDelegate:proxyDelegate1];
     

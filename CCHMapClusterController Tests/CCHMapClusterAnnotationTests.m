@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterAnnotationTests.m
-//  CCHMapClusterController
+//  YCCHMapClusterAnnotationTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -25,21 +25,21 @@
 
 #import <XCTest/XCTest.h>
 
-#import "CCHMapClusterAnnotation.h"
+#import "YCCHMapClusterAnnotation.h"
 
-@interface CCHMapClusterAnnotationTests : XCTestCase
+@interface YCCHMapClusterAnnotationTests : XCTestCase
 
-@property (nonatomic) CCHMapClusterAnnotation *clusterAnnotation;
+@property (nonatomic) YCCHMapClusterAnnotation *clusterAnnotation;
 
 @end
 
-@implementation CCHMapClusterAnnotationTests
+@implementation YCCHMapClusterAnnotationTests
 
 - (void)setUp
 {
     [super setUp];
     
-    self.clusterAnnotation = [[CCHMapClusterAnnotation alloc] init];
+    self.clusterAnnotation = [[YCCHMapClusterAnnotation alloc] init];
 }
 
 - (void)testIsCluster

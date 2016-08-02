@@ -1,6 +1,6 @@
 //
-//  CCHMapViewDelegateProxyOverlayTests.m
-//  CCHMapClusterController
+//  YCCHMapViewDelegateProxyOverlayTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2014 Claus Höfele
 //
@@ -23,8 +23,8 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapViewDelegateProxy.h"
-#import "CCHMapClusterControllerDebugPolygon.h"
+#import "YCCHMapViewDelegateProxy.h"
+#import "YCCHMapClusterControllerDebugPolygon.h"
 
 #import <XCTest/XCTest.h>
 #import <MapKit/MapKit.h>
@@ -71,18 +71,18 @@
 @implementation MapViewDelegateEmpty
 @end
 
-@interface CCHMapViewDelegateProxyOverlayTests : XCTestCase
+@interface YCCHMapViewDelegateProxyOverlayTests : XCTestCase
 
 @end
 
-@implementation CCHMapViewDelegateProxyOverlayTests
+@implementation YCCHMapViewDelegateProxyOverlayTests
 
 - (MKOverlayRenderer *)rendererForOverlay:(id<MKOverlay>)overlay withMapViewDelegate:(NSObject<MKMapViewDelegate> *)mapViewDelegate proxyDelegate:(NSObject<MKMapViewDelegate> *)proxyDelegate
 {
     MKMapView *mapView = [[MKMapView alloc] init];
     mapView.delegate = mapViewDelegate;
     
-    CCHMapViewDelegateProxy *delegateProxy = [[CCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:proxyDelegate];
+    YCCHMapViewDelegateProxy *delegateProxy = [[YCCHMapViewDelegateProxy alloc] initWithMapView:mapView delegate:proxyDelegate];
     (void)delegateProxy;
     
     MKOverlayRenderer *overlayRenderer;
@@ -96,7 +96,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = nil;
     NSObject<MKMapViewDelegate> *proxyDelegate = nil;
-    MKOverlayRenderer *view = [self rendererForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayRenderer *view = [self rendererForOverlay:[YCCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([view isMemberOfClass:MKPolygonRenderer.class]);
 }
 
@@ -112,7 +112,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayRenderer0.class];
     NSObject<MKMapViewDelegate> *proxyDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayRenderer1.class];
-    MKOverlayRenderer *renderer = [self rendererForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayRenderer *renderer = [self rendererForOverlay:[YCCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([renderer isMemberOfClass:TestOverlayRenderer0.class]);
 }
 
@@ -120,7 +120,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = nil;
     NSObject<MKMapViewDelegate> *proxyDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayRenderer0.class];
-    MKOverlayRenderer *renderer = [self rendererForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayRenderer *renderer = [self rendererForOverlay:[YCCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([renderer isMemberOfClass:MKPolygonRenderer.class]);
 }
 
@@ -128,7 +128,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = [[MapViewDelegateReturnsNil alloc] init];
     NSObject<MKMapViewDelegate> *proxyDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayRenderer0.class];
-    MKOverlayRenderer *renderer = [self rendererForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayRenderer *renderer = [self rendererForOverlay:[YCCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([renderer isMemberOfClass:MKPolygonRenderer.class]);
 }
 
@@ -136,7 +136,7 @@
 {
     NSObject<MKMapViewDelegate> *mapViewDelegate = [[MapViewDelegateEmpty alloc] init];
     NSObject<MKMapViewDelegate> *proxyDelegate = [[MapViewDelegateReturnsValue alloc] initWithValueClass:TestOverlayRenderer0.class];
-    MKOverlayRenderer *renderer = [self rendererForOverlay:[CCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
+    MKOverlayRenderer *renderer = [self rendererForOverlay:[YCCHMapClusterControllerDebugPolygon new] withMapViewDelegate:mapViewDelegate proxyDelegate:proxyDelegate];
     XCTAssertTrue([renderer isMemberOfClass:MKPolygonRenderer.class]);
 }
 

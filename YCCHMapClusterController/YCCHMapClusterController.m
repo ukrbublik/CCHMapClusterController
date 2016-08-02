@@ -151,6 +151,38 @@
     }];
 }
 
+- (void)replaceAnnotations:(NSArray *)annotationsArr withCompletionHandler:(void (^)())completionHandler
+{
+    [self cancelAllClusterOperations];
+    
+    NSSet* annotationsSet = [NSSet setWithArray:annotationsArr];
+    //NSArray* oldAnnotationsArr = [self.allAnnotations allObjects];
+    NSMutableSet* annsToDeleteSet = [[NSMutableSet alloc] initWithSet:self.allAnnotations];
+    [annsToDeleteSet minusSet:annotationsSet];
+    NSMutableSet* annsToAddSet = [[NSMutableSet alloc] initWithSet:annotationsSet];
+    [annsToAddSet minusSet:self.allAnnotations];
+    NSArray* annsToAddArr = [annsToAddSet allObjects];
+    NSArray* annsToDeleteArr = [annsToDeleteSet allObjects];
+    
+    if(annsToAddArr.count + annsToDeleteArr.count > 0) {
+        [self.allAnnotations removeAllObjects];
+        [self.allAnnotations addObjectsFromArray:annotationsArr];
+        
+        [self.backgroundQueue addOperationWithBlock:^{
+            BOOL updatedRem = [self.allAnnotationsMapTree removeAnnotations:annsToDeleteArr];
+            BOOL updatedAdd = [self.allAnnotationsMapTree addAnnotations:annsToAddArr];
+            BOOL updated = updatedRem || updatedAdd;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (updated && !self.isRegionChanging) {
+                    [self updateAnnotationsWithCompletionHandler:completionHandler];
+                } else if (completionHandler) {
+                    completionHandler();
+                }
+            });
+        }];
+    }
+}
+
 - (void)removeAnnotations:(NSArray *)annotations withCompletionHandler:(void (^)())completionHandler
 {
     [self cancelAllClusterOperations];
@@ -324,5 +356,11 @@
         }
     }];
 }
+
+#pragma mark - public
+-(void)refreshAnnotations {
+    [self mapView:self.mapView regionDidChangeAnimated:NO];
+}
+
 
 @end

@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  CCHMapClusterController Example iOS
+//  YCCHMapClusterController Example iOS
 //
 //  Created by Hoefele, Claus(choefele) on 27.11.13.
 //  Copyright (c) 2013 Claus Höfele. All rights reserved.
@@ -14,24 +14,24 @@
 #import "SettingsViewController.h"
 #import "Settings.h"
 
-#import "CCHMapClusterAnnotation.h"
-#import "CCHMapClusterController.h"
-#import "CCHMapClusterControllerDelegate.h"
-#import "CCHCenterOfMassMapClusterer.h"
-#import "CCHNearCenterMapClusterer.h"
-#import "CCHFadeInOutMapAnimator.h"
+#import "YCCHMapClusterAnnotation.h"
+#import "YCCHMapClusterController.h"
+#import "YCCHMapClusterControllerDelegate.h"
+#import "YCCHCenterOfMassMapClusterer.h"
+#import "YCCHNearCenterMapClusterer.h"
+#import "YCCHFadeInOutMapAnimator.h"
 
-@interface MapViewController()<DataReaderDelegate, CCHMapClusterControllerDelegate, MKMapViewDelegate>
+@interface MapViewController()<DataReaderDelegate, YCCHMapClusterControllerDelegate, YMKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
 @property (nonatomic) DataReader *dataReader;
 @property (nonatomic) Settings *settings;
-@property (nonatomic) CCHMapClusterController *mapClusterControllerRed;
-@property (nonatomic) CCHMapClusterController *mapClusterControllerBlue;
+@property (nonatomic) YCCHMapClusterController *mapClusterControllerRed;
+@property (nonatomic) YCCHMapClusterController *mapClusterControllerBlue;
 @property (nonatomic) NSUInteger count;
-@property (nonatomic) id<CCHMapClusterer> mapClusterer;
-@property (nonatomic) id<CCHMapAnimator> mapAnimator;
+@property (nonatomic) id<YCCHMapClusterer> mapClusterer;
+@property (nonatomic) id<YCCHMapAnimator> mapAnimator;
 
 @end
 
@@ -48,7 +48,7 @@
     }
     
     // Set up map clustering
-    self.mapClusterControllerRed = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+    self.mapClusterControllerRed = [[YCCHMapClusterController alloc] initWithMapView:self.mapView];
     self.mapClusterControllerRed.delegate = self;
     
     // Read annotations
@@ -76,23 +76,23 @@
     self.mapClusterControllerRed.marginFactor = settings.marginFactor;
     
     if (settings.clusterer == SettingsClustererCenterOfMass) {
-        self.mapClusterer = [[CCHCenterOfMassMapClusterer alloc] init];
+        self.mapClusterer = [[YCCHCenterOfMassMapClusterer alloc] init];
     } else if (settings.clusterer == SettingsClustererNearCenter) {
-        self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
+        self.mapClusterer = [[YCCHNearCenterMapClusterer alloc] init];
     }
     self.mapClusterControllerRed.clusterer = self.mapClusterer;
     self.mapClusterControllerRed.maxZoomLevelForClustering = settings.maxZoomLevelForClustering;
     self.mapClusterControllerRed.minUniqueLocationsForClustering = settings.minUniqueLocationsForClustering;
 
     if (settings.animator == SettingsAnimatorFadeInOut) {
-        self.mapAnimator = [[CCHFadeInOutMapAnimator alloc] init];
+        self.mapAnimator = [[YCCHFadeInOutMapAnimator alloc] init];
     }
     self.mapClusterControllerRed.animator = self.mapAnimator;
     
     // Similar settings for second cluster controller
     if (settings.isGroupingEnabled) {
         if (self.mapClusterControllerBlue == nil) {
-            self.mapClusterControllerBlue = [[CCHMapClusterController alloc] initWithMapView:self.mapView];
+            self.mapClusterControllerBlue = [[YCCHMapClusterController alloc] initWithMapView:self.mapView];
             self.mapClusterControllerBlue.delegate = self;
         }
         
@@ -146,14 +146,14 @@
     }
 }
 
-- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+- (NSString *)mapClusterController:(YCCHMapClusterController *)mapClusterController titleForMapClusterAnnotation:(YCCHMapClusterAnnotation *)mapClusterAnnotation
 {
     NSUInteger numAnnotations = mapClusterAnnotation.annotations.count;
     NSString *unit = numAnnotations > 1 ? @"annotations" : @"annotation";
     return [NSString stringWithFormat:@"%tu %@", numAnnotations, unit];
 }
 
-- (NSString *)mapClusterController:(CCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+- (NSString *)mapClusterController:(YCCHMapClusterController *)mapClusterController subtitleForMapClusterAnnotation:(YCCHMapClusterAnnotation *)mapClusterAnnotation
 {
     NSUInteger numAnnotations = MIN(mapClusterAnnotation.annotations.count, 5);
     NSArray *annotations = [mapClusterAnnotation.annotations.allObjects subarrayWithRange:NSMakeRange(0, numAnnotations)];
@@ -161,7 +161,7 @@
     return [titles componentsJoinedByString:@", "];
 }
 
-- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+- (void)mapClusterController:(YCCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(YCCHMapClusterAnnotation *)mapClusterAnnotation
 {
     ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[self.mapView viewForAnnotation:mapClusterAnnotation];
     clusterAnnotationView.count = mapClusterAnnotation.annotations.count;
@@ -172,7 +172,7 @@
 {
     MKAnnotationView *annotationView;
     
-    if ([annotation isKindOfClass:CCHMapClusterAnnotation.class]) {
+    if ([annotation isKindOfClass:YCCHMapClusterAnnotation.class]) {
         static NSString *identifier = @"clusterAnnotation";
         
         ClusterAnnotationView *clusterAnnotationView = (ClusterAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
@@ -183,7 +183,7 @@
             clusterAnnotationView.canShowCallout = YES;
         }
         
-        CCHMapClusterAnnotation *clusterAnnotation = (CCHMapClusterAnnotation *)annotation;
+        YCCHMapClusterAnnotation *clusterAnnotation = (YCCHMapClusterAnnotation *)annotation;
         clusterAnnotationView.count = clusterAnnotation.annotations.count;
         clusterAnnotationView.blue = (clusterAnnotation.mapClusterController == self.mapClusterControllerBlue);
         clusterAnnotationView.uniqueLocation = clusterAnnotation.isUniqueLocation;

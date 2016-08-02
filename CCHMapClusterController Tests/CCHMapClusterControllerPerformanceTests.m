@@ -1,6 +1,6 @@
 //
-//  CCHMapClusterControllerPerformanceTests.m
-//  CCHMapClusterController
+//  YCCHMapClusterControllerPerformanceTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,7 +23,7 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHMapClusterControllerUtils.h"
+#import "YCCHMapClusterControllerUtils.h"
 #import "TBQuadTree.h"
 #import "QTree.h"
 
@@ -39,7 +39,7 @@
 @interface QTreeAnnotation : MKPointAnnotation<QTreeInsertable>
 @end
 
-@interface CCHMapClusterControllerPerformanceTests : XCTestCase
+@interface YCCHMapClusterControllerPerformanceTests : XCTestCase
 
 @property (nonatomic) NSMutableArray *annotations;
 @property (nonatomic) MKMapRect mapRect;
@@ -48,7 +48,7 @@
 
 @end
 
-@implementation CCHMapClusterControllerPerformanceTests
+@implementation YCCHMapClusterControllerPerformanceTests
 
 - (void)setUp
 {
@@ -111,7 +111,7 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
     
     double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
-        CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
+        YCCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             NSSet *allAnnotationsInCell = [mapView annotationsInMapRect:cellRect];
             
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
@@ -133,7 +133,7 @@ double performAndTrackTime(int numPasses, dispatch_block_t block)
     
     double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
-        CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
+        YCCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             NSArray *allAnnotationsInCell = [tree annotationsInMapRect:cellRect];
             
             [clusterCounts addObject:@(allAnnotationsInCell.count)];
@@ -178,7 +178,7 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
     
     double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
-        CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
+        YCCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             NSMutableArray *allAnnotationsInCell = [NSMutableArray array];
             TBQuadTreeGatherDataInRange(root, TBBoundingBoxForMapRect(cellRect), ^(TBQuadTreeNodeData data) {
                 [allAnnotationsInCell addObject:(__bridge id)data.data];
@@ -209,7 +209,7 @@ TBBoundingBox TBBoundingBoxForMapRect(MKMapRect mapRect)
     
     double duration = performAndTrackTime(NUM_PASSES, ^{
         NSMutableArray *clusterCounts = [NSMutableArray array];
-        CCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
+        YCCHMapClusterControllerEnumerateCells(mapRect, cellSize, ^(MKMapRect cellRect) {
             MKCoordinateRegion region = MKCoordinateRegionForMapRect(cellRect);
             NSArray* allAnnotationsInCell = [tree getObjectsInRegion:region minNonClusteredSpan:0];
             

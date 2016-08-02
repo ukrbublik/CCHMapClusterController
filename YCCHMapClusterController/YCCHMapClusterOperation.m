@@ -109,6 +109,10 @@
     BOOL disableClustering = (zoomLevel > self.maxZoomLevelForClustering);
     BOOL respondsToSelector = [_clusterControllerDelegate respondsToSelector:@selector(mapClusterController:willReuseMapClusterAnnotation:)];
     
+    
+    __block int cntSingle = 0;
+    __block int cntGrouped = 0;
+    
     // For each cell in the grid, pick one cluster annotation to show
     MKMapRect gridMapRect = [self.class gridMapRectForMapRect:self.mapViewVisibleMapRect withCellMapSize:self.cellMapSize marginFactor:self.marginFactor];
     NSMutableSet *clusters = [NSMutableSet set];
@@ -159,8 +163,17 @@
                 //Usually you have different reuse ids for regular annotations and group of annotations
                 //So you don't want to reuse annotation view anymore if it became group from regular or vice versa
                 BOOL annotationDidChangeIsCluster = (annotationSet.count == 1) != (annotationForCell.annotations.count == 1);
+                BOOL clusterAnnotationDidChangeCnt = !annotationDidChangeIsCluster && annotationSet.count > 1 && annotationSet.count != annotationForCell.annotations.count;
+                
+                if(annotationSet.count == 1)
+                    cntSingle++;
+                else if(annotationSet.count > 1)
+                    cntGrouped++;
                 
                 if (annotationDidChangeIsCluster || annotationForCell == nil) {
+                    if(annotationForCell != nil) {
+                        [visibleAnnotationsInCell removeObject:annotationForCell];
+                    }
                     // Create new cluster annotation
                     annotationForCell = [[YCCHMapClusterAnnotation alloc] init];
                     annotationForCell.mapClusterController = _clusterController;
@@ -177,7 +190,7 @@
                         }
                         annotationForCell.title = nil;
                         annotationForCell.subtitle = nil;
-                        if (respondsToSelector) {
+                        if (respondsToSelector && clusterAnnotationDidChangeCnt) {
                             [_clusterControllerDelegate mapClusterController:_clusterController willReuseMapClusterAnnotation:annotationForCell];
                         }
                     });
@@ -199,6 +212,8 @@
     NSMutableSet *annotationsToRemoveAsSet = [NSMutableSet setWithSet:annotationsBeforeAsSet];
     [annotationsToRemoveAsSet minusSet:clusters];
     NSArray *annotationsToRemove = [annotationsToRemoveAsSet allObjects];
+    
+    //NSLog(@"s %i, g %i ; k %i, a %i, r %i ", cntSingle, cntGrouped, annotationsToKeep.count, annotationsToAdd.count, annotationsToRemove.count);
     
     // Show cluster annotations on map
     [_visibleAnnotationsMapTree removeAnnotations:annotationsToRemove];

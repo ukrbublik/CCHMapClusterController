@@ -16,11 +16,20 @@ MKCoordinateSpan YMKRegionSizeToMK(YMKMapRegionSize size);
 MKMapRect YMKMapRectToMK(YMKMapRect r);
 YMKMapRect YMKMapRectFromMK(MKMapRect rect);
 
+
 @interface YMKMapView (Additions)
 
+//Compatibility with MKMapKit
 -(MKMapRect)visibleMapRect;
 - (CLLocationCoordinate2D)convertPoint:(CGPoint)point
                   toCoordinateFromView:(UIView *)view;
 -(NSSet*)annotationsInMapRect:(MKMapRect)rect;
+
+//Internal views: YXScrollView, YMKMapOverlayView
+@property (nonatomic, weak) UIScrollView<UIScrollViewDelegate>* xScrollView;
+@property (nonatomic, weak) UIView* mapOverlayView;
+
+//Adding and Inserting Overlays
+@property(nonatomic, readonly) NSArray<id<MKOverlay>>* overlays;
 
 @end

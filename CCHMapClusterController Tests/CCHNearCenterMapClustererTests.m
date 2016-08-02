@@ -1,6 +1,6 @@
 //
-//  CCHNearCenterMapClustererTests.m
-//  CCHMapClusterController
+//  YCCHNearCenterMapClustererTests.m
+//  YCCHMapClusterController
 //
 //  Copyright (C) 2013 Claus Höfele
 //
@@ -23,23 +23,23 @@
 //  THE SOFTWARE.
 //
 
-#import "CCHNearCenterMapClusterer.h"
+#import "YCCHNearCenterMapClusterer.h"
 
 #import <XCTest/XCTest.h>
 
-@interface CCHNearCenterMapClustererTests : XCTestCase
+@interface YCCHNearCenterMapClustererTests : XCTestCase
 
-@property (nonatomic) CCHNearCenterMapClusterer *mapClusterer;
+@property (nonatomic) YCCHNearCenterMapClusterer *mapClusterer;
 
 @end
 
-@implementation CCHNearCenterMapClustererTests
+@implementation YCCHNearCenterMapClustererTests
 
 - (void)setUp
 {
     [super setUp];
 
-    self.mapClusterer = [[CCHNearCenterMapClusterer alloc] init];
+    self.mapClusterer = [[YCCHNearCenterMapClusterer alloc] init];
 }
 
 - (void)testCoordinateForAnnotationsNil

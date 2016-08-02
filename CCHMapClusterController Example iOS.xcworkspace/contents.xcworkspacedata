@@ -4,4 +4,7 @@
    <FileRef
       location = "group:CCHMapClusterController Example iOS/CCHMapClusterController Example iOS.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>
