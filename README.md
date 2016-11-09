@@ -4,6 +4,7 @@ YCCHMapClusterController
 `YCCHMapClusterController` solves the problem of displaying many annotations on an `YMKMapView` and is available under the MIT license.
 
 Fork of [CCHMapClusterController] (https://github.com/choefele/CCHMapClusterController)
+
 Changed to work with [Yandex Map Kit] (https://github.com/yandexmobile/yandexmapkit-ios)
 
 <p align="center" >
